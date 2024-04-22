@@ -21,6 +21,20 @@ const Cadastro = () => {
     const passwordMinLengthError = useRef()
     const fazerCadastro = useRef();
 
+    const Cadastrar = async (e) => {
+        e.preventDefault()
+        const email = InputEmail.current.value;
+        const password = InputSenha.current.value;
+
+        auth.createUserWithEmailAndPassword(
+            email, password
+        ).then(() => {
+            console.log("Cadastrado com sucesso")
+        }).catch(error => {
+            alert(getErrorMessage(error));
+        })
+    }
+
     const changeEmail = () => {
         const email = InputEmail.current.value
         emailRequiredError.current.style.display = email ? "none" : "block";
@@ -45,21 +59,6 @@ const Cadastro = () => {
         toggleRegisterButtonDisable();
     }
 
-    const Cadastrar = (evt) => {
-        evt.preventDefault()
-        const email = InputEmail.current.value;
-        const password = InputSenha.current.value;
-
-        auth.createUserWithEmailAndPassword(
-            email, password
-        ).then(() => {
-            console.log("Cadastrado com sucesso")
-        }).catch(error => {
-            alert(getErrorMessage(error));
-        })
-    }
-
-    
     function validatePasswordsMatch() {
         const password = InputSenha.current.value;
         const confirmPassword = InputConfirmSenha.current.value;
@@ -95,7 +94,7 @@ const Cadastro = () => {
     <main>
     <img src={TeamUp} alt="" />
 
-    <form>
+    <form onSubmit={Cadastrar}>
         <div className='cabecalho'>
             <h1>Cadastro</h1>
             <hr />
@@ -131,7 +130,7 @@ const Cadastro = () => {
             </div>
 
             <div className="buttons">
-                <button type="submit" id='CadastroButton' onClick={Cadastrar} ref={fazerCadastro} disabled={true}>Cadastrar</button>
+                <button type="submit" id='CadastroButton' ref={fazerCadastro} disabled={true}>Cadastrar</button>
             </div>
 
             <div className='buttonCadastrar'>

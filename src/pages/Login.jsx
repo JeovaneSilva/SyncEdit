@@ -1,5 +1,6 @@
 import React, {useRef} from 'react'
 import { Link } from 'react-router-dom'
+import { auth } from '../firebaseConfig'
 
 import '../styles/global.css'
 import '../styles/login.css'
@@ -20,7 +21,18 @@ const Login = () => {
     const emailInvalidError = useRef();
     const passwordRequiredError = useRef()
 
-   
+    const FazerLogin = (e) => {
+        e.preventDefault()
+        auth.signInWithEmailAndPassword(
+            InputEmail.current.value, InputSenha.current.value
+        ).then(() => {
+            console.log("sucesso")
+            window.location.href = "/Home";
+        }).catch(error => {
+            console.log("erro ao fazer login")
+        });
+    }
+
       const changeEmail = () => {
         toggleButtonsDisable();
         toggleEmailErrors();
@@ -68,7 +80,7 @@ const Login = () => {
     <main>
         <img src={TeamUp} alt="" />
 
-        <form>
+        <form onSubmit={FazerLogin}>
             <div className='cabecalho'>
                 <h1>Login</h1>
                 <hr />
