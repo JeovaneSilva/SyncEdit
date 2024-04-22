@@ -47,7 +47,6 @@ const Cadastro = () => {
 
     const Cadastrar = (evt) => {
         evt.preventDefault()
-
         const email = InputEmail.current.value;
         const password = InputSenha.current.value;
 
