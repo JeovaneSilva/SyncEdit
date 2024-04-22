@@ -1,0 +1,150 @@
+import React, {useRef} from 'react'
+import { Link } from 'react-router-dom'
+import { auth } from '../firebaseConfig';
+import TeamUp from '../../public/undraw_team_up_re_84ok.svg'
+import '../styles/global.css'
+import '../styles/login.css'
+
+const Cadastro = () => {
+
+    function validateEmail(email) {
+        return /\S+@\S+\.\S+/.test(email);
+    }
+
+    const InputConfirmSenha = useRef()
+    const passwordDoesntMatchError = useRef()
+    const InputEmail = useRef();
+    const emailRequiredError = useRef();
+    const emailInvalidError = useRef();
+    const InputSenha = useRef();
+    const passwordRequiredError = useRef()
+    const passwordMinLengthError = useRef()
+    const fazerCadastro = useRef();
+
+    const changeEmail = () => {
+        const email = InputEmail.current.value
+        emailRequiredError.current.style.display = email ? "none" : "block";
+        
+        emailInvalidError.current.style.display = validateEmail(email) ? "none" : "block";
+    
+        toggleRegisterButtonDisable();
+    }
+
+    const changeSenha = () => {
+        const password = InputSenha.current.value
+        passwordRequiredError.current.style.display = password ? "none" : "block";
+    
+        passwordMinLengthError.current.style.display = password.length >= 6 ? "none" : "block";
+    
+        validatePasswordsMatch();
+        toggleRegisterButtonDisable();
+      }
+
+    const changeConfirmSenha = () => {
+        validatePasswordsMatch();
+        toggleRegisterButtonDisable();
+    }
+
+    const Cadastrar = (evt) => {
+        evt.preventDefault()
+
+        const email = InputEmail.current.value;
+        const password = InputSenha.current.value;
+
+        auth.createUserWithEmailAndPassword(
+            email, password
+        ).then(() => {
+            console.log("Cadastrado com sucesso")
+        }).catch(error => {
+            alert(getErrorMessage(error));
+        })
+    }
+
+    
+    function validatePasswordsMatch() {
+        const password = InputSenha.current.value;
+        const confirmPassword = InputConfirmSenha.current.value;
+    
+        passwordDoesntMatchError.current.style.display =
+            password == confirmPassword ? "none" : "block";
+    }
+
+    function toggleRegisterButtonDisable() {
+        fazerCadastro.current.disabled = !isFormValid();
+    }
+
+    function isFormValid() {
+        const email = InputEmail.current.value;
+        if (!email || !validateEmail(email)) {
+            return false;
+        }
+    
+        const password = InputSenha.current.value;
+        if (!password || password.length < 6) {
+            return false;
+        }
+    
+        const confirmPassword = InputConfirmSenha.current.value;
+        if (password != confirmPassword) {
+            return false;
+        }
+    
+        return true;
+    }
+
+  return (
+    <main>
+    <img src={TeamUp} alt="" />
+
+    <form>
+        <div className='cabecalho'>
+            <h1>Cadastro</h1>
+            <hr />
+            <p>Seja Bem Vindo ao SyncEdit!</p>
+        </div>
+
+        <div>
+            <div className='Email'>
+                <label htmlFor="InputEmail">Email</label>
+                <input type="text" name="InputEmail" ref={InputEmail} id="InputEmail" onChange={changeEmail}/>
+                <div className="error" ref={emailInvalidError}>Email é inválido</div>
+                <div className="error" ref={emailRequiredError}>Email é obrigatório</div>
+            </div>
+
+            <div className='Password'>
+                <label htmlFor="InputPassword">Senha</label>
+                <input type="password" name="InputPassword" ref={InputSenha} id="InputPassword" onChange={changeSenha}/>
+                <div className="error" ref={passwordRequiredError}>Senha é obrigatória</div>
+                <div className="error" ref={passwordMinLengthError}>Senha deve ter pelo menos 6 caracteres</div>
+            </div>
+
+            <div>
+                <div className='ConfirmPassword'>
+                    <label htmlFor="InputConfirmPassword"> Confirmar Senha</label>
+                    <input type="password" name="InputConfirmPassword" ref={InputConfirmSenha} id="InputConfirmPassword" onChange={changeConfirmSenha} />
+                    <div className="error" ref={passwordDoesntMatchError}>Senha e Confirmar senha devem ser iguais</div>
+                </div>
+            </div>
+
+            <div className='MostrarSenha'>
+                <input type="checkbox" id="checkSenha" />
+                <p>Mostrar Senha</p>
+            </div>
+
+            <div className="buttons">
+                <button type="submit" id='CadastroButton' onClick={Cadastrar} ref={fazerCadastro} disabled={true}>Cadastrar</button>
+            </div>
+
+            <div className='buttonCadastrar'>
+                <p>Já tem uma conta? </p>
+                <Link to="/" ><button className='login'>Login</button></Link>
+            </div>
+            
+        </div>
+
+    </form>
+</main>
+  )
+}
+
+export default Cadastro
