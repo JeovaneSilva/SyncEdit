@@ -1,6 +1,8 @@
 import React, {useRef} from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebaseConfig'
+import { Main } from '../styles/styles'
+import { TopForm } from '../styles/componentes'
 
 import '../styles/global.css'
 import '../styles/login.css'
@@ -77,15 +79,16 @@ const Login = () => {
 
 
   return (
-    <main>
+    <Main>
         <img src={TeamUp} alt="" />
 
         <form onSubmit={FazerLogin}>
-            <div className='cabecalho'>
+            <TopForm>
                 <h1>Login</h1>
                 <hr />
                 <p>Seja Bem Vindo ao SyncEdit!</p>
-            </div>
+            </TopForm>
+            
 
             <div>
                 <div className='Email'>
@@ -120,7 +123,7 @@ const Login = () => {
             </div>
 
         </form>
-    </main>
+    </Main>
   )
 }
 

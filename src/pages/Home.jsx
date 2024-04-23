@@ -1,7 +1,7 @@
 import React from 'react'
 import LogoProjeto from '../../public/logoSyncEdit.png'
 import '../styles/global.css'
-import '../styles/Home.css'
+import '../styles/home.css'
 import { FaSearch, FaBars, FaEdit, FaTrash } from "react-icons/fa";
 
 const Home = () => {
@@ -9,7 +9,7 @@ const Home = () => {
     <>
       <header>
         <div className="logo">
-          <img src={LogoProjeto} alt="" />
+          <img src={LogoProjeto} alt="" className='Logo' />
         </div>
 
         <div className="BarraPesquisa">
