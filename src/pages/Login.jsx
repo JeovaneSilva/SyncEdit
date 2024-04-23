@@ -1,9 +1,7 @@
 import React, {useRef} from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebaseConfig'
-import { Main } from '../styles/styles'
-import { TopForm, DadosForm,MostrarSenha } from '../styles/componentes'
-
+import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, EsqueciSenha, CadastrarDiv } from '../styles/LoginRegister'
 
 import TeamUp from '../../public/undraw_team_up_re_84ok.svg'
 
@@ -100,23 +98,23 @@ const Login = () => {
                     <label htmlFor="InputPassword">Senha</label>
                     <input type="password" name="InputPassword" ref={InputSenha} id="InputPassword" onChange={changeSenha}/>
                     <div className="error" ref={passwordRequiredError}>Senha é obrigatória</div>
-                    </DadosForm>
+                </DadosForm>
 
                 <MostrarSenha>
                     <input type="checkbox" id="checkSenha" />
                     <p>Mostrar Senha</p>
                 </MostrarSenha>
 
-                <div className="buttons">
-                    <button type="submit" id='LoginButton' disabled={true} ref={ElementLogin} >Login</button>
-                    <button className='EsqueciSenha' disabled={true} ref={ElementRecuperarSenha} >Esqueceu a Senha?</button>
-                </div>
+                <ButtonsForm>
+                    <ButtonEntrarRegistrar type="submit" disabled={true} ref={ElementLogin}>Entrar</ButtonEntrarRegistrar>
+                    <EsqueciSenha disabled={true} ref={ElementRecuperarSenha} >Esqueceu a Senha?</EsqueciSenha>
+                </ButtonsForm>
 
 
-                <div className='buttonCadastrar'>
+                <CadastrarDiv $LoginRegister="buttonCadastrar" >
                     <p>Ainda não possui conta? </p>
-                    <Link to="/cadastro"><button className='Cadastrar'>Cadastra-se</button></Link>
-                </div>
+                    <Link to="/cadastro"><button className='buttonCadastrar'>Cadastra-se</button></Link>
+                </CadastrarDiv>
                 
             </div>
 

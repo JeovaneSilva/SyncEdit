@@ -1,6 +1,5 @@
 import React from 'react'
 import LogoProjeto from '../../public/logoSyncEdit.png'
-import '../styles/global.css'
 import '../styles/home.css'
 import { FaSearch, FaBars, FaEdit, FaTrash } from "react-icons/fa";
 

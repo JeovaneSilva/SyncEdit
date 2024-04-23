@@ -2,8 +2,7 @@ import React, {useRef} from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebaseConfig';
 import TeamUp from '../../public/undraw_team_up_re_84ok.svg'
-import '../styles/global.css'
-import '../styles/login.css'
+import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, CadastrarDiv } from '../styles/LoginRegister'
 
 const Cadastro = () => {
 
@@ -91,57 +90,55 @@ const Cadastro = () => {
     }
 
   return (
-    <main>
+    <Main>
     <img src={TeamUp} alt="" />
 
     <form onSubmit={Cadastrar}>
-        <div className='cabecalho'>
+        <TopForm>
             <h1>Cadastro</h1>
             <hr />
             <p>Seja Bem Vindo ao SyncEdit!</p>
-        </div>
+        </TopForm>
 
         <div>
-            <div className='Email'>
+            <DadosForm>
                 <label htmlFor="InputEmail">Email</label>
                 <input type="text" name="InputEmail" ref={InputEmail} id="InputEmail" onChange={changeEmail}/>
                 <div className="error" ref={emailInvalidError}>Email é inválido</div>
                 <div className="error" ref={emailRequiredError}>Email é obrigatório</div>
-            </div>
+            </DadosForm>
 
-            <div className='Password'>
+            <DadosForm>
                 <label htmlFor="InputPassword">Senha</label>
                 <input type="password" name="InputPassword" ref={InputSenha} id="InputPassword" onChange={changeSenha}/>
                 <div className="error" ref={passwordRequiredError}>Senha é obrigatória</div>
                 <div className="error" ref={passwordMinLengthError}>Senha deve ter pelo menos 6 caracteres</div>
-            </div>
+            </DadosForm>
 
-            <div>
-                <div className='ConfirmPassword'>
-                    <label htmlFor="InputConfirmPassword"> Confirmar Senha</label>
-                    <input type="password" name="InputConfirmPassword" ref={InputConfirmSenha} id="InputConfirmPassword" onChange={changeConfirmSenha} />
-                    <div className="error" ref={passwordDoesntMatchError}>Senha e Confirmar senha devem ser iguais</div>
-                </div>
-            </div>
+            <DadosForm>
+                <label htmlFor="InputConfirmPassword"> Confirmar Senha</label>
+                <input type="password" name="InputConfirmPassword" ref={InputConfirmSenha} id="InputConfirmPassword" onChange={changeConfirmSenha} />
+                <div className="error" ref={passwordDoesntMatchError}>Senha e Confirmar senha devem ser iguais</div>
+            </DadosForm>
 
-            <div className='MostrarSenha'>
-                <input type="checkbox" id="checkSenha" />
-                <p>Mostrar Senha</p>
-            </div>
+            <MostrarSenha>
+                    <input type="checkbox" id="checkSenha" />
+                    <p>Mostrar Senha</p>
+            </MostrarSenha>
 
-            <div className="buttons">
-                <button type="submit" id='CadastroButton' ref={fazerCadastro} disabled={true}>Cadastrar</button>
-            </div>
+            <ButtonsForm>
+                <ButtonEntrarRegistrar type="submit" disabled={true} ref={fazerCadastro}>Cadastrar</ButtonEntrarRegistrar>
+            </ButtonsForm>
 
-            <div className='buttonCadastrar'>
+            <CadastrarDiv>
                 <p>Já tem uma conta? </p>
                 <Link to="/" ><button className='login'>Login</button></Link>
-            </div>
+            </CadastrarDiv>
             
         </div>
 
     </form>
-</main>
+</Main>
   )
 }
 
