@@ -27,11 +27,53 @@ export const TopForm = styled.div`
     }
 `
 
-export const Formulario = styled.div`
+export const DadosForm = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    font-weight: 600;
+
+    input {
+        font-family: var(--font1);
+        font-size: 16px;
+        width: 350px;
+        height: 30px;
+        border-radius: 5px;
+        border: none;
+        padding: 10px;
+        border: 2px solid var(--cor2);
+    }
+
+    label{
+        font-size: 18px;
+    }
+
     div{
-        display: flex;
-        flex-direction: column;
-        margin-top: 5px;
-        font-weight: 600
+        display: none;
+        margin-top: 3px;
+        background-color: red;
+        color: white;
+        border-radius: 0 10px 10px 10px;
+        padding: 3px;
+    }
+`
+
+export const MostrarSenha = styled.div`
+    margin-top: 5px;
+    display: flex;
+    font-weight: 400;
+`
+
+export const ButtonsForm = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button:active {
+        opacity: 0.8;
+    }
+
+    button[disabled] {
+        opacity: 0.8;
     }
 `

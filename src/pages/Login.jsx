@@ -2,10 +2,8 @@ import React, {useRef} from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebaseConfig'
 import { Main } from '../styles/styles'
-import { TopForm } from '../styles/componentes'
+import { TopForm, DadosForm,MostrarSenha } from '../styles/componentes'
 
-import '../styles/global.css'
-import '../styles/login.css'
 
 import TeamUp from '../../public/undraw_team_up_re_84ok.svg'
 
@@ -91,23 +89,23 @@ const Login = () => {
             
 
             <div>
-                <div className='Email'>
+                <DadosForm>
                     <label htmlFor="InputEmail">Email</label>
                     <input type="text" name="InputEmail" ref={InputEmail} id="InputEmail" onChange={changeEmail}/>
                     <div className="error" ref={emailInvalidError}>Email é inválido</div>
                     <div className="error" ref={emailRequiredError}>Email é obrigatório</div>
-                </div>
+                </DadosForm>
 
-                <div className='Password'>
+                <DadosForm>
                     <label htmlFor="InputPassword">Senha</label>
                     <input type="password" name="InputPassword" ref={InputSenha} id="InputPassword" onChange={changeSenha}/>
                     <div className="error" ref={passwordRequiredError}>Senha é obrigatória</div>
-                </div>
+                    </DadosForm>
 
-                <div className='MostrarSenha'>
+                <MostrarSenha>
                     <input type="checkbox" id="checkSenha" />
                     <p>Mostrar Senha</p>
-                </div>
+                </MostrarSenha>
 
                 <div className="buttons">
                     <button type="submit" id='LoginButton' disabled={true} ref={ElementLogin} >Login</button>
