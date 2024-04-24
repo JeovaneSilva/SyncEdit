@@ -82,7 +82,7 @@ export const CardsProjetos = styled.div`
     margin-top: 2rem;
     margin-bottom: 2rem;
     display: grid;
-    grid-template-columns: repeat(3, minmax(140px, 380px));
+    grid-template-columns: repeat(4, minmax(140px, 380px));
     justify-content: center;
     align-items: center;
     gap: 20px;
@@ -94,58 +94,56 @@ export const Card = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 330px;
-    height: 350px;
+    width: 210px;
+    height: 230px;
     border-radius: 25px;
     border: 2px solid #00ff9c;
     background-color: #f5f5f5;
     gap: 10px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 `
 
 export const InfoCard = styled.div`
-    width: 320px;
-    height: 260px;
     border-radius: 25px 25px 0 0 ;
     text-align: center;
 
     h2{
-        margin-top: 18px;
-        font-size: 40px;
+        margin-top: 10px;
+        font-size: 20px;
         font-weight: 600;
     }
 
     p{
         font-weight: 600;
-        margin-top: 20px;
-        font-size: 20px;
+        margin-top: 10px;
+        font-size: 13px;
     }
 
     h3{
         font-weight: 600;
         margin-top: 20px;
-        font-size: 32px;
+        font-size: 20px;
     }
 
     span{
         font-weight: bolder;
-        font-size: 55px;
-        margin-top: 15px;
+        font-size: 30px;
+        margin-top: 25px;
     }
 `
 
 export const IconsCard = styled.div`
     display: flex;
     justify-content: space-around;
-    width: 280px;
+    width: 210px;
 
     div:first-child{
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 25px;
-        width: 100px;
-        height: 52px;
+        font-size: 18px;
+        width: 65px;
+        height: 32px;
         border-radius: 25px;
         background-color: #00ff9c;
     }
@@ -154,9 +152,9 @@ export const IconsCard = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 25px;
-        width: 100px;
-        height: 52px;
+        font-size: 18px;
+        width: 65px;
+        height: 32px;
         border-radius: 25px;
         border: 2px solid #00ff9c;
     }

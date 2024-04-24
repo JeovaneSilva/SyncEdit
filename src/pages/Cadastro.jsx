@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebaseConfig';
 import TeamUp from '../../public/undraw_team_up_re_84ok.svg'
@@ -38,6 +38,7 @@ const Cadastro = () => {
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
     const [senha, setSenha] = useState('');
+    const [ConfirmSenha, setConfirmSenha] = useState('')
 
     const handleMostrarSenha = () => {
         setMostrarSenha(!mostrarSenha);
@@ -45,11 +46,7 @@ const Cadastro = () => {
 
     const handleChangeSenha = (e) => {
         setSenha(e.target.value);
-        toggleButtonsDisable();
-        togglePasswordErrors();
-    }
-
-    const changeSenha = () => {
+        
         const password = InputSenha.current.value
         passwordRequiredError.current.style.display = password ? "none" : "block";
     
@@ -57,12 +54,13 @@ const Cadastro = () => {
     
         validatePasswordsMatch();
         toggleRegisterButtonDisable();
-      }
+    }
 
-    const changeConfirmSenha = () => {
+    const handleChangeConfirmSenha = (e) => {
+        setConfirmSenha(e.target.value)
         validatePasswordsMatch();
         toggleRegisterButtonDisable();
-    }
+      }
 
     const Cadastrar = async (e) => {
         e.preventDefault()
@@ -137,20 +135,20 @@ const Cadastro = () => {
 
             <DadosForm>
                 <label htmlFor="InputPassword">Senha</label>
-                <input type="password" name="InputPassword" ref={InputSenha} id="InputPassword" onChange={changeSenha}/>
+                <input type={mostrarSenha ? 'text' : 'password'} value={senha} name="InputPassword" ref={InputSenha} id="InputPassword" onChange={handleChangeSenha}/>
                 <div className="error" ref={passwordRequiredError}>Senha é obrigatória</div>
                 <div className="error" ref={passwordMinLengthError}>Senha deve ter pelo menos 6 caracteres</div>
             </DadosForm>
 
             <DadosForm>
                 <label htmlFor="InputConfirmPassword"> Confirmar Senha</label>
-                <input type="password" name="InputConfirmPassword" ref={InputConfirmSenha} id="InputConfirmPassword" onChange={changeConfirmSenha} />
+                <input type={mostrarSenha ? 'text' : 'password'} value={ConfirmSenha} name="InputConfirmPassword" ref={InputConfirmSenha} id="InputConfirmPassword" onChange={handleChangeConfirmSenha} />
                 <div className="error" ref={passwordDoesntMatchError}>Senha e Confirmar senha devem ser iguais</div>
             </DadosForm>
 
             <MostrarSenha>
-                    <input type="checkbox" id="checkSenha" />
-                    <p>Mostrar Senha</p>
+                <input type="checkbox" checked={mostrarSenha} onChange={handleMostrarSenha} />
+                <p>Mostrar Senha</p>
             </MostrarSenha>
 
             <ButtonsForm>
