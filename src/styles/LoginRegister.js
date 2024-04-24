@@ -62,7 +62,7 @@ export const DadosForm = styled.div`
     input {
         font-size: 16px;
         width: 350px;
-        height: 25px;
+        height: 35px;
         border-radius: 5px;
         border: none;
         padding: 10px;
@@ -115,7 +115,7 @@ export const ButtonEntrarRegistrar = styled.button`
     margin-top: 1rem;
 `
 
-export const EsqueciSenha = styled.button`
+export const EsqueciSenha = styled.div`
     background-color: transparent;
     border: none;
     cursor: pointer;

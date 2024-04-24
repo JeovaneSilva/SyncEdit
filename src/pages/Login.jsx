@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {useRef,useState} from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebaseConfig'
 import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, EsqueciSenha, CadastrarDiv } from '../styles/LoginRegister'
@@ -19,27 +19,63 @@ const Login = () => {
     const emailInvalidError = useRef();
     const passwordRequiredError = useRef()
 
-    const FazerLogin = (e) => {
-        e.preventDefault()
-        auth.signInWithEmailAndPassword(
-            InputEmail.current.value, InputSenha.current.value
-        ).then(() => {
-            console.log("sucesso")
+    auth.onAuthStateChanged(user => {
+        if (!user) {
             window.location.href = "/Home";
-        }).catch(error => {
-            console.log("erro ao fazer login")
-        });
-    }
+        }
+    })
 
       const changeEmail = () => {
         toggleButtonsDisable();
         toggleEmailErrors();
       }
 
-      const changeSenha = () => {
+    const [mostrarSenha, setMostrarSenha] = useState(false);
+    const [senha, setSenha] = useState('');
+
+    const handleMostrarSenha = () => {
+        setMostrarSenha(!mostrarSenha);
+    };
+
+      const handleChangeSenha = (e) => {
+        setSenha(e.target.value);
         toggleButtonsDisable();
         togglePasswordErrors();
       }
+
+      const FazerLogin = (e) => {
+        e.preventDefault()
+
+        auth.signInWithEmailAndPassword(
+            InputEmail.current.value, InputSenha.current.value
+        ).then(() => {
+            console.log("sucesso")
+            window.location.href = "/Home";
+        }).catch(error => {
+            console.log(getErrorMessage(error))
+        });
+    }
+
+      const MudarSenha = () => {
+        console.log("testando")
+        const email = InputEmail.current.value
+
+        auth.sendPasswordResetEmail(email).then(() => {
+            alert('Email enviado com sucesso');
+        }).catch(error => {
+            alert(getErrorMessage(error));
+        });
+      }
+
+      function getErrorMessage(error) {
+            if (error.code == "auth/invalid-credential") {
+                return "Usuário nao encontrado";
+            }
+            if (error.code == "auth/wrong-password") {
+                return "Senha inválida";
+            }
+            return error.message;
+        }
 
       function toggleEmailErrors() {
         const email = InputEmail.current.value
@@ -55,8 +91,7 @@ const Login = () => {
 
       function toggleButtonsDisable() {
         const emailValid = isEmailValid();
-        ElementRecuperarSenha.current.disabled = !emailValid;
-    
+        
         const passwordValid = isPasswordValid();
         ElementLogin.current.disabled = !emailValid || !passwordValid;
     }
@@ -72,7 +107,6 @@ const Login = () => {
     function isPasswordValid() {
         return InputSenha.current.value ? true : false;
     }
-
 
   return (
     <Main>
@@ -96,18 +130,18 @@ const Login = () => {
 
                 <DadosForm>
                     <label htmlFor="InputPassword">Senha</label>
-                    <input type="password" name="InputPassword" ref={InputSenha} id="InputPassword" onChange={changeSenha}/>
+                    <input type={mostrarSenha ? 'text' : 'password'} value={senha} name="InputPassword" ref={InputSenha} id="InputPassword" onChange={handleChangeSenha}/>
                     <div className="error" ref={passwordRequiredError}>Senha é obrigatória</div>
                 </DadosForm>
 
                 <MostrarSenha>
-                    <input type="checkbox" id="checkSenha" />
+                    <input type="checkbox" checked={mostrarSenha} onChange={handleMostrarSenha} />
                     <p>Mostrar Senha</p>
                 </MostrarSenha>
 
                 <ButtonsForm>
                     <ButtonEntrarRegistrar type="submit" disabled={true} ref={ElementLogin}>Entrar</ButtonEntrarRegistrar>
-                    <EsqueciSenha disabled={true} ref={ElementRecuperarSenha} >Esqueceu a Senha?</EsqueciSenha>
+                    <EsqueciSenha disabled={true} ref={ElementRecuperarSenha} onClick={MudarSenha} >Esqueceu a Senha?</EsqueciSenha>
                 </ButtonsForm>
 
 

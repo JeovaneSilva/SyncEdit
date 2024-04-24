@@ -5,8 +5,9 @@ const globalStyle = createGlobalStyle`
     *{
         padding: 0;
         margin: 0;
-        overflow-x: hidden;
+        box-sizing: border-box;
         font-family: "Nunito", sans-serif;
+        overflow-x: hidden;
     }
 
 `

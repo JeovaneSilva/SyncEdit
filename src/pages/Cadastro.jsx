@@ -20,19 +20,12 @@ const Cadastro = () => {
     const passwordMinLengthError = useRef()
     const fazerCadastro = useRef();
 
-    const Cadastrar = async (e) => {
-        e.preventDefault()
-        const email = InputEmail.current.value;
-        const password = InputSenha.current.value;
+    auth.onAuthStateChanged(user => {
+        if (!user) {
+            window.location.href = "/Home";
+        }
+    })
 
-        auth.createUserWithEmailAndPassword(
-            email, password
-        ).then(() => {
-            console.log("Cadastrado com sucesso")
-        }).catch(error => {
-            alert(getErrorMessage(error));
-        })
-    }
 
     const changeEmail = () => {
         const email = InputEmail.current.value
@@ -41,6 +34,19 @@ const Cadastro = () => {
         emailInvalidError.current.style.display = validateEmail(email) ? "none" : "block";
     
         toggleRegisterButtonDisable();
+    }
+
+    const [mostrarSenha, setMostrarSenha] = useState(false);
+    const [senha, setSenha] = useState('');
+
+    const handleMostrarSenha = () => {
+        setMostrarSenha(!mostrarSenha);
+    };
+
+    const handleChangeSenha = (e) => {
+        setSenha(e.target.value);
+        toggleButtonsDisable();
+        togglePasswordErrors();
     }
 
     const changeSenha = () => {
@@ -56,6 +62,27 @@ const Cadastro = () => {
     const changeConfirmSenha = () => {
         validatePasswordsMatch();
         toggleRegisterButtonDisable();
+    }
+
+    const Cadastrar = async (e) => {
+        e.preventDefault()
+        const email = InputEmail.current.value;
+        const password = InputSenha.current.value;
+
+        auth.createUserWithEmailAndPassword(
+            email, password
+        ).then(() => {
+            console.log("Cadastrado com sucesso")
+        }).catch(error => {
+            alert(getErrorMessage(error));
+        })
+    }
+
+    function getErrorMessage(error) {
+        if (error.code == "auth/email-already-in-use") {
+            return "Email já está em uso";
+        }
+        return error.message;
     }
 
     function validatePasswordsMatch() {
