@@ -1,4 +1,4 @@
-import React, {useRef,useState} from 'react'
+import React, {useRef,useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebaseConfig'
 import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, EsqueciSenha, CadastrarDiv } from '../styles/LoginRegister'
@@ -19,11 +19,15 @@ const Login = () => {
     const emailInvalidError = useRef();
     const passwordRequiredError = useRef()
 
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            window.location.href = "/Home"  
-        }
-    })
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                window.location.href = "/Home";
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
       const changeEmail = () => {
         toggleButtonsDisable();

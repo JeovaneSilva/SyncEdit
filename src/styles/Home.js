@@ -9,6 +9,17 @@ export const Header = styled.header`
     box-shadow: -4px 4px 8px 0px #00000040;
 `
 
+export const DivLoading = styled.div`
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+
+    label {
+        font-size: 24px;
+    }
+`
+
 export const Logo = styled.div`
     margin-left: 53px;
 

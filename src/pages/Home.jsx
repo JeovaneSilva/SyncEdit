@@ -28,9 +28,7 @@ const Home = () => {
             });
 
             // Retornar uma função de limpeza para remover o listener quando o componente for desmontado
-            return () => {
-                unsubscribe(); // Remover o listener
-            };
+            return () => unsubscribe(); // Remover o listener
         } catch (error) {
             console.error('Erro ao obter o nome de usuário:', error);
         }
@@ -71,7 +69,7 @@ const LogOut = (e) =>{
     <Section>
         <h1>Documentos de Texto</h1>
         <div>
-                <p>Bem-vindo, {userName}!</p>
+                {userName && <p>Bem-vindo, {userName}!</p>}
                 <button onClick={LogOut}>Sair</button>
         </div>
 

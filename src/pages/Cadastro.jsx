@@ -1,14 +1,10 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { auth, db } from '../firebaseConfig';
 import TeamUp from '../../public/undraw_team_up_re_84ok.svg'
 import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, CadastrarDiv } from '../styles/LoginRegister'
 
 const Cadastro = () => {
-
-    function validateEmail(email) {
-        return /\S+@\S+\.\S+/.test(email);
-    }
 
     const InputConfirmSenha = useRef()
     const passwordDoesntMatchError = useRef()
@@ -21,12 +17,24 @@ const Cadastro = () => {
     const fazerCadastro = useRef();
     const InputUser =useRef();
 
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            window.location.href = "/Home"  
-        }
-    })
+    const [mostrarSenha, setMostrarSenha] = useState(false);
+    const [senha, setSenha] = useState('');
+    const [ConfirmSenha, setConfirmSenha] = useState('')
+    const [cadastroSucesso, setCadastroSucesso] = useState(false);
 
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user && cadastroSucesso) {
+                window.location.href = "/Home";
+            }
+        });
+
+        return () => unsubscribe();
+    }, [cadastroSucesso]);
+
+    function validateEmail(email) {
+        return /\S+@\S+\.\S+/.test(email);
+    }
 
     const changeEmail = () => {
         const email = InputEmail.current.value
@@ -37,9 +45,7 @@ const Cadastro = () => {
         toggleRegisterButtonDisable();
     }
 
-    const [mostrarSenha, setMostrarSenha] = useState(false);
-    const [senha, setSenha] = useState('');
-    const [ConfirmSenha, setConfirmSenha] = useState('')
+    
 
     const handleMostrarSenha = () => {
         setMostrarSenha(!mostrarSenha);
@@ -70,25 +76,16 @@ const Cadastro = () => {
         const userName = InputUser.current.value
 
         try {
-            // Criar usuário com e-mail e senha
             const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-    
-            // Obter o ID do usuário recém-criado
             const userId = userCredential.user.uid;
-    
-            // Armazenar detalhes do usuário no banco de dados
+
             await db.ref(`users/${userId}`).set({
                 email: email,
                 userName: userName
             }).then(() => {
-                console.log("Usuário cadastrado com sucesso!");
-                window.location.href="/Home"
-            }).catch(error => {
-                console.log(getErrorMessage(error))
-            });
-            
+                setCadastroSucesso(true)
+            })
         } catch (error) {
-            // Lidar com erros durante o cadastro
             alert(getErrorMessage(error));
             console.error("Erro durante o cadastro:", error);
         }
