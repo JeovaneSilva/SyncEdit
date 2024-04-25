@@ -19,6 +19,7 @@ const Cadastro = () => {
     const passwordRequiredError = useRef()
     const passwordMinLengthError = useRef()
     const fazerCadastro = useRef();
+    const InputUser =useRef();
 
     auth.onAuthStateChanged(user => {
         if (!user) {
@@ -126,6 +127,11 @@ const Cadastro = () => {
         </TopForm>
 
         <div>
+            <DadosForm>
+                <label htmlFor="InputUser">Nome de Usuário</label>
+                <input type="text" name="InputUser" ref={InputUser} id="InputUser"/>
+            </DadosForm>
+
             <DadosForm>
                 <label htmlFor="InputEmail">Email</label>
                 <input type="text" name="InputEmail" ref={InputEmail} id="InputEmail" onChange={changeEmail}/>
