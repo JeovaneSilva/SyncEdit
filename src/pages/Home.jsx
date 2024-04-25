@@ -1,9 +1,53 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import LogoProjeto from '../../public/logoSyncEdit.png'
+import { auth, db } from '../firebaseConfig'
 import { FaSearch, FaBars, FaEdit, FaTrash } from "react-icons/fa";
 import { Header, Logo, DivPesquisa, MenuToggle, Section, CardsProjetos, Card, InfoCard, IconsCard } from '../styles/Home'
 
 const Home = () => {
+
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    // Função para recuperar o nome de usuário
+    const fetchUserName = async () => {
+        try {
+            // Adicionar um listener para detectar mudanças no estado de autenticação
+            const unsubscribe = auth.onAuthStateChanged((user) => {
+                if (user) {
+                    // Se o usuário estiver autenticado, obter o nome de usuário do banco de dados
+                    const userId = user.uid;
+                    const userRef = db.ref(`users/${userId}/userName`);
+                    userRef.on('value', (snapshot) => {
+                        const name = snapshot.val();
+                        if (name) {
+                            setUserName(name);
+                        }
+                    });
+                } 
+            });
+
+            // Retornar uma função de limpeza para remover o listener quando o componente for desmontado
+            return () => {
+                unsubscribe(); // Remover o listener
+            };
+        } catch (error) {
+            console.error('Erro ao obter o nome de usuário:', error);
+        }
+    };
+
+    fetchUserName();
+}, []);
+
+const LogOut = (e) =>{
+  auth.signOut().then(() => {
+    window.location.href="/"
+}).catch(() => {
+    alert('Erro ao fazer LogOut')
+})
+}
+  
+
   return (
     <>
       <Header>
@@ -26,6 +70,10 @@ const Home = () => {
      
     <Section>
         <h1>Documentos de Texto</h1>
+        <div>
+                <p>Bem-vindo, {userName}!</p>
+                <button onClick={LogOut}>Sair</button>
+        </div>
 
         <CardsProjetos>
 

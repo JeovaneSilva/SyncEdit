@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react'
 import { Link } from 'react-router-dom'
-import { auth } from '../firebaseConfig';
+import { auth, db } from '../firebaseConfig';
 import TeamUp from '../../public/undraw_team_up_re_84ok.svg'
 import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, CadastrarDiv } from '../styles/LoginRegister'
 
@@ -22,8 +22,8 @@ const Cadastro = () => {
     const InputUser =useRef();
 
     auth.onAuthStateChanged(user => {
-        if (!user) {
-            window.location.href = "/Home";
+        if (user) {
+            window.location.href = "/Home"  
         }
     })
 
@@ -67,14 +67,31 @@ const Cadastro = () => {
         e.preventDefault()
         const email = InputEmail.current.value;
         const password = InputSenha.current.value;
+        const userName = InputUser.current.value
 
-        auth.createUserWithEmailAndPassword(
-            email, password
-        ).then(() => {
-            console.log("Cadastrado com sucesso")
-        }).catch(error => {
+        try {
+            // Criar usuário com e-mail e senha
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    
+            // Obter o ID do usuário recém-criado
+            const userId = userCredential.user.uid;
+    
+            // Armazenar detalhes do usuário no banco de dados
+            await db.ref(`users/${userId}`).set({
+                email: email,
+                userName: userName
+            }).then(() => {
+                console.log("Usuário cadastrado com sucesso!");
+                window.location.href="/Home"
+            }).catch(error => {
+                console.log(getErrorMessage(error))
+            });
+            
+        } catch (error) {
+            // Lidar com erros durante o cadastro
             alert(getErrorMessage(error));
-        })
+            console.error("Erro durante o cadastro:", error);
+        }
     }
 
     function getErrorMessage(error) {

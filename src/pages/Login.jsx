@@ -20,8 +20,8 @@ const Login = () => {
     const passwordRequiredError = useRef()
 
     auth.onAuthStateChanged(user => {
-        if (!user) {
-            window.location.href = "/Home";
+        if (user) {
+            window.location.href = "/Home"  
         }
     })
 
