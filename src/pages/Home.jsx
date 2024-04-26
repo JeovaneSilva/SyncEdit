@@ -2,11 +2,12 @@ import React, { useState, useEffect,useRef } from 'react';
 import LogoProjeto from '../../public/logoSyncEdit.png'
 import { auth, db } from '../firebaseConfig'
 import { FaSearch, FaBars, FaEdit, FaTrash, FaArrowRight } from "react-icons/fa";
-import { Header, Logo, DivPesquisa, MenuToggle, Section, CardsProjetos, Card, InfoCard, IconsCard, Sidebar } from '../styles/Home'
+import { Header, Logo, DivPesquisa, MenuToggle, Section, CardsProjetos, Card, InfoCard, IconsCard, Sidebar,Overlay } from '../styles/Home'
 
 const Home = () => {
   const Menutoggle = useRef()
   const SidebarRef = useRef()
+  const DivSideBar = useRef()
 
   const [userName, setUserName] = useState('');
 
@@ -53,30 +54,20 @@ const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
     Menutoggle.current.style.display="none"
+    document.body.style.overflow = isSidebarOpen ? 'auto' : 'hidden';
   };
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
     Menutoggle.current.style.display="block"
+    document.body.style.overflow ='auto'
   };
 
-  const handleClickOutside = (event) => {
-    if (SidebarRef.current && !SidebarRef.current.contains(event.target)) {
-      setIsSidebarOpen(false);
+  const handleOverlayClick = (e) => {
+    if (SidebarRef.current && !SidebarRef.current.contains(e.target)) {
+      closeSidebar();
     }
   };
-
-  useEffect(() => {
-    if (isSidebarOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isSidebarOpen]);
-  
 
   return (
     <>
@@ -96,8 +87,7 @@ const [isSidebarOpen, setIsSidebarOpen] = useState(false);
           <button onClick={toggleSidebar} ref={Menutoggle}><FaBars /></button>
         </MenuToggle>
     </Header>
-    
-    
+    {isSidebarOpen && <Overlay onClick={handleOverlayClick}/>}
     <Sidebar $isOpen={isSidebarOpen} ref={SidebarRef}>
       <div>
         <button onClick={closeSidebar}><FaArrowRight /></button>

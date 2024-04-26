@@ -163,7 +163,6 @@ export const IconsCard = styled.div`
 `
 
 export const MenuToggle = styled.div`
-    z-index: 999;
     margin-right: 36px;
      
      button{
@@ -176,11 +175,17 @@ export const MenuToggle = styled.div`
     }
 `
 
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10; /* Ensure that the overlay is above other elements */
+`;
+
 export const Sidebar = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
     position: fixed;
     top: 0;
     right: ${({ $isOpen }) => ($isOpen ? '0' : '-500px')};
@@ -188,6 +193,7 @@ export const Sidebar = styled.div`
     height: 100vh;
     background-color: #00ff9c;
     transition: right 0.3s ease;
+    z-index: 999;
 
     div{
         width: 100%;
