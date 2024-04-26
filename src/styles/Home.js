@@ -65,15 +65,6 @@ export const DivPesquisa = styled.div`
     }
 `
 
-export const MenuToggle = styled.div`
-     margin-right: 53px;
-
-    svg{
-        font-size: 26px;
-        color: #00ff9c;
-    }
-`
-
 export const Section = styled.section`
     display: flex;
     flex-direction: column;
@@ -168,5 +159,53 @@ export const IconsCard = styled.div`
         height: 32px;
         border-radius: 25px;
         border: 2px solid #00ff9c;
+    }
+`
+
+export const MenuToggle = styled.div`
+    z-index: 999;
+    margin-right: 36px;
+     
+     button{
+        background-color: transparent;
+        border: none;
+     }
+
+    svg{
+        font-size: 26px;
+    }
+`
+
+export const Sidebar = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    position: fixed;
+    top: 0;
+    right: ${({ $isOpen }) => ($isOpen ? '0' : '-500px')};
+    width: 350px;
+    height: 100vh;
+    background-color: #00ff9c;
+    transition: right 0.3s ease;
+
+    div{
+        width: 100%;
+    }
+
+    button:first-child{
+        margin-top: 20px;
+        width: 30px;
+        border: none;
+        background-color: transparent;
+        font-size: 26px;
+    }
+
+    h1{
+        text-align: center;
+    }
+
+    button:last-child{
+        width: 100px;
     }
 `

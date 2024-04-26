@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import LogoProjeto from '../../public/logoSyncEdit.png'
 import { auth, db } from '../firebaseConfig'
-import { FaSearch, FaBars, FaEdit, FaTrash } from "react-icons/fa";
-import { Header, Logo, DivPesquisa, MenuToggle, Section, CardsProjetos, Card, InfoCard, IconsCard } from '../styles/Home'
+import { FaSearch, FaBars, FaEdit, FaTrash, FaArrowRight } from "react-icons/fa";
+import { Header, Logo, DivPesquisa, MenuToggle, Section, CardsProjetos, Card, InfoCard, IconsCard, Sidebar } from '../styles/Home'
 
 const Home = () => {
+  const Menutoggle = useRef()
 
   const [userName, setUserName] = useState('');
 
@@ -44,6 +45,18 @@ const LogOut = (e) =>{
     alert('Erro ao fazer LogOut')
 })
 }
+
+const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Função para alternar o estado da barra lateral
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+    Menutoggle.current.style.display="none"
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
   
 
   return (
@@ -61,17 +74,21 @@ const LogOut = (e) =>{
           </DivPesquisa>
 
         <MenuToggle>
-          <FaBars />
+            <button onClick={toggleSidebar}><FaBars /></button>
         </MenuToggle>
     </Header>
-
+    
+    
+    <Sidebar $isOpen={isSidebarOpen}>
+      <div>
+        <button onClick={closeSidebar}><FaArrowRight /></button>
+      </div>
+        <h1>{userName}</h1>
+        <button onClick={LogOut}>Sair</button>
+    </Sidebar>
      
     <Section>
         <h1>Documentos de Texto</h1>
-        <div>
-                {userName && <p>Bem-vindo, {userName}!</p>}
-                <button onClick={LogOut}>Sair</button>
-        </div>
 
         <CardsProjetos>
 
