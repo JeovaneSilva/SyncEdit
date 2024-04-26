@@ -12,6 +12,7 @@ const Home = () => {
 
   const [userName, setUserName] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [overlayPointerEvents, setOverlayPointerEvents] = useState('none');
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -46,16 +47,12 @@ const Home = () => {
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-    if (!isSidebarOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+    setOverlayPointerEvents(isSidebarOpen ? 'none' : 'auto');
   };
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
-    document.body.style.overflow = 'auto';
+    setOverlayPointerEvents('none');
   };
 
   const handleOverlayClick = () => {
@@ -78,7 +75,7 @@ const Home = () => {
           <button onClick={toggleSidebar} ref={MenuToggleRef}><FaBars /></button>
         </MenuToggle>
       </Header>
-      {isSidebarOpen && <Overlay $isOpen={isSidebarOpen} onClick={handleOverlayClick} ref={OverlayDiv} />}
+      <Overlay $isOpen={isSidebarOpen} onClick={handleOverlayClick} ref={OverlayDiv} style={{ pointerEvents: overlayPointerEvents }} />
       <Sidebar $isOpen={isSidebarOpen} ref={SidebarRef}>
         <div>
           <button onClick={closeSidebar}><FaArrowRight /></button>
