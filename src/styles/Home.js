@@ -179,10 +179,10 @@ export const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10; /* Ensure that the overlay is above other elements */
+  width: 100%;
+  height: 100%;
+  background-color: ${({ $isOpen }) => ($isOpen ? 'rgba(0, 0, 0, 0.5)' : 'transparent')};
+  z-index: 10;
 `;
 
 export const Sidebar = styled.div`
