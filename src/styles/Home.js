@@ -206,6 +206,11 @@ export const Sidebar = styled.div`
     }
 
     button:last-child{
-        width: 100px;
+        width: 60px;
+        height: 30px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 5px;
+        border: none;
     }
 `

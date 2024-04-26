@@ -6,6 +6,7 @@ import { Header, Logo, DivPesquisa, MenuToggle, Section, CardsProjetos, Card, In
 
 const Home = () => {
   const Menutoggle = useRef()
+  const SidebarRef = useRef()
 
   const [userName, setUserName] = useState('');
 
@@ -56,7 +57,25 @@ const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
+    Menutoggle.current.style.display="block"
   };
+
+  const handleClickOutside = (event) => {
+    if (SidebarRef.current && !SidebarRef.current.contains(event.target)) {
+      setIsSidebarOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isSidebarOpen]);
   
 
   return (
@@ -74,12 +93,12 @@ const [isSidebarOpen, setIsSidebarOpen] = useState(false);
           </DivPesquisa>
 
         <MenuToggle>
-            <button onClick={toggleSidebar}><FaBars /></button>
+          <button onClick={toggleSidebar} ref={Menutoggle}><FaBars /></button>
         </MenuToggle>
     </Header>
     
     
-    <Sidebar $isOpen={isSidebarOpen}>
+    <Sidebar $isOpen={isSidebarOpen} ref={SidebarRef}>
       <div>
         <button onClick={closeSidebar}><FaArrowRight /></button>
       </div>
