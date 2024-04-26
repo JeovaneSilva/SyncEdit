@@ -179,8 +179,8 @@ export const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 10; /* Ensure that the overlay is above other elements */
 `;
@@ -193,7 +193,7 @@ export const Sidebar = styled.div`
     height: 100vh;
     background-color: #00ff9c;
     transition: right 0.3s ease;
-    z-index: 999;
+    z-index: 11;
 
     div{
         width: 100%;

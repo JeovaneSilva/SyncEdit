@@ -7,7 +7,7 @@ import { Header, Logo, DivPesquisa, MenuToggle, Section, CardsProjetos, Card, In
 const Home = () => {
   const Menutoggle = useRef()
   const SidebarRef = useRef()
-  const DivSideBar = useRef()
+  const OverlayDiv = useRef()
 
   const [userName, setUserName] = useState('');
 
@@ -54,6 +54,7 @@ const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
     Menutoggle.current.style.display="none"
+    OverlayDiv.current.style.display="none"
     document.body.style.overflow = isSidebarOpen ? 'auto' : 'hidden';
   };
 
@@ -87,7 +88,7 @@ const [isSidebarOpen, setIsSidebarOpen] = useState(false);
           <button onClick={toggleSidebar} ref={Menutoggle}><FaBars /></button>
         </MenuToggle>
     </Header>
-    {isSidebarOpen && <Overlay onClick={handleOverlayClick}/>}
+    <Overlay $isOpen={isSidebarOpen} onClick={handleOverlayClick} ref={OverlayDiv}/>
     <Sidebar $isOpen={isSidebarOpen} ref={SidebarRef}>
       <div>
         <button onClick={closeSidebar}><FaArrowRight /></button>
