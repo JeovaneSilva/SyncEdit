@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaSearch, FaBars, FaEdit, FaTrash, FaArrowRight } from "react-icons/fa";
-import { Header, Logo, DivPesquisa, MenuToggle, Section, CardsProjetos, Card, InfoCard, IconsCard, Sidebar,Overlay } from '../styles/Home'
+import { Header, Logo, DivPesquisa, MenuToggle, Section, CardsProjetos, Card, InfoCard, IconsCard, Sidebar,Overlay} from '../styles/Home'
 
 import LogoProjeto from '../../public/logoSyncEdit.png'
 import { auth, db } from '../firebaseConfig'
@@ -82,6 +82,7 @@ const Home = () => {
         </div>
         <h1>{userName}</h1>
         <button onClick={LogOut}>Sair</button>
+
       </Sidebar>
      
     <Section>

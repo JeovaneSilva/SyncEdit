@@ -70,6 +70,7 @@ export const Section = styled.section`
     flex-direction: column;
     align-items: center;
     width: 100vw;
+    overflow-y: hidden;
 
 
     h1{
