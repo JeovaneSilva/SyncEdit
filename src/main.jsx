@@ -2,8 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Login from './pages/Login.jsx'
 import Cadastro from './pages/Cadastro.jsx'
-import Home from './pages/Home.jsx'
-import Textos from './components/Textos.jsx'
+import Home from './pages/Home/Home.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
 import GlobalStyle from './styles/globalStyle'
 
@@ -24,10 +23,6 @@ const router = createBrowserRouter([
     path:"/Home",
     element:<Home />,
     errorElement:<ErrorPage/>
-  },
-  {
-    path:"/Home/:id",
-    element:<Textos/>
   }
 ])
 

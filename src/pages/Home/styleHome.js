@@ -1,6 +1,11 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
-export const Header = styled.header`
+export const HomeDiv = styled.div`
+    width: 100vw;
+    height: 100vh;
+`
+
+export const HeaderContainer = styled.header`
     width: 100vw;
     height: 90px;
     display: flex;
@@ -63,6 +68,75 @@ export const DivPesquisa = styled.div`
     div > svg{
         font-size: 26px;
     }
+`
+
+export const MenuToggle = styled.div`
+    margin-right: 36px;
+    
+    svg{
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+`
+
+export const SideBar = styled.div`
+    background-color: #08c57c;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    right: 0;
+    width: 300px;
+    right: ${($sidebar) => $sidebar ? '0' : '-100%'};
+    animation: showSideBar .4s;
+
+    > svg{
+        position: fixed;
+        width: 30px;
+        height: 30px;
+        margin-top: 32px;
+        margin-left: 32px;
+        cursor: pointer;
+    }
+
+    @keyframes showSideBar {
+        from{
+            opacity: 0;
+            width: 0;
+        }
+        to{
+            opacity: 1;
+            width: 300px;
+        }
+        
+    }
+`
+
+export const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+
+    > svg{
+        width: 70px;
+        height: 70px;
+    }
+
+    h1{
+        font-size: 25px;
+    }
+
+   button{
+    width: 60px;
+    height: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin-top: 10px;
+   }
 `
 
 export const Section = styled.section`
@@ -160,64 +234,5 @@ export const IconsCard = styled.div`
         height: 32px;
         border-radius: 25px;
         border: 2px solid #00ff9c;
-    }
-`
-
-export const MenuToggle = styled.div`
-    margin-right: 36px;
-     
-     button{
-        background-color: transparent;
-        border: none;
-     }
-
-    svg{
-        font-size: 26px;
-    }
-`
-
-export const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: ${({ $isOpen }) => ($isOpen ? 'rgba(0, 0, 0, 0.5)' : 'transparent')};
-  z-index: 10;
-`;
-
-export const Sidebar = styled.div`
-    position: fixed;
-    top: 0;
-    right: ${({ $isOpen }) => ($isOpen ? '0' : '-500px')};
-    width: 350px;
-    height: 100vh;
-    background-color: #00ff9c;
-    transition: right 0.3s ease;
-    z-index: 11;
-
-    div{
-        width: 100%;
-    }
-
-    button:first-child{
-        margin-top: 20px;
-        width: 30px;
-        border: none;
-        background-color: transparent;
-        font-size: 26px;
-    }
-
-    h1{
-        text-align: center;
-    }
-
-    button:last-child{
-        width: 60px;
-        height: 30px;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 5px;
-        border: none;
     }
 `
