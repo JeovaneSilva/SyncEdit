@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
+// #00ff9c
+
 export const HomeDiv = styled.div`
     width: 100vw;
     height: 100vh;
 `
+
 
 export const HeaderContainer = styled.header`
     width: 100vw;
@@ -12,17 +15,46 @@ export const HeaderContainer = styled.header`
     justify-content: space-between;
     align-items: center;
     box-shadow: -4px 4px 8px 0px #00000040;
+    position: fixed;
+    background-color: white;
+    top: 0;
+    z-index: 10;
 `
 
-export const DivLoading = styled.div`
-    background: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    width: 100%;
-    height: 100%;
+export const LoadingBar = styled.div`
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        top: 30px;
+        margin-left: 150px;
+        gap: 10px;
 
-    label {
-        font-size: 24px;
+    p{
+        text-align: center;
+        font-size: 15px;
     }
+
+
+    hr{
+        width: 300px;
+        height: 3px;
+        border-radius: 5px;
+        background-color: black;
+        animation: loading 3s ease-in-out ; /* Animação de carregamento */
+        border: none;
+    }
+
+    @keyframes loading {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: 150px;
+  }
+  100% {
+    width: 300px;
+  }
+}
 `
 
 export const Logo = styled.div`
@@ -35,10 +67,10 @@ export const Logo = styled.div`
 `
 
 export const DivPesquisa = styled.div`
+    margin-right: 57px;
     overflow-y: hidden;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 630px;
     background-color: #00ff9c;
     border-radius: 8px;
@@ -47,27 +79,15 @@ export const DivPesquisa = styled.div`
     gap: 5px;
 
     input{
-        width: 550px;
+        width: 100%;
         height: 45px;
         padding: 5px;
         background-color: transparent;
         border: none;
         font-size: 18px;
+        outline: none;
     }
 
-    div{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: white;
-        width: 70px;
-        height: 45px;
-        border-radius: 8px;
-    }
-
-    div > svg{
-        font-size: 26px;
-    }
 `
 
 export const MenuToggle = styled.div`
@@ -89,6 +109,7 @@ export const SideBar = styled.div`
     width: 300px;
     right: ${($sidebar) => $sidebar ? '0' : '-100%'};
     animation: showSideBar .4s;
+    z-index: 999;
 
     > svg{
         position: fixed;
@@ -118,7 +139,7 @@ export const Content = styled.div`
     align-items: center;
     margin-top: 60px;
 
-    > svg{
+    > svg:first-child{
         width: 70px;
         height: 70px;
     }
@@ -139,12 +160,119 @@ export const Content = styled.div`
    }
 `
 
+export const DivListAmigos = styled.div`
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    > div{
+        width: 90%;
+        border: 1px solid black;
+        border-bottom: none;
+    }
+
+    > div > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #038a57;
+        height: 50px;
+        padding: 5px;
+        font-weight: bold;
+        text-align: left;
+        color: white;
+        border-bottom: 1px solid black;
+    }
+    
+    > div > div:hover{
+        background-color:  #035234;
+    }
+
+    > div > div > div:first-child{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    > div > div > div:last-child{
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+
+    > div > div > div:last-child > svg{
+        width: 20px;
+        height: 20px;
+    }
+
+   
+`
+
+export const Overlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo preto transparente */ /* Garante que o overlay esteja acima de todo o conteúdo */
+`
+
 export const Section = styled.section`
+    margin-top: 90px;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100vw;
     overflow-y: hidden;
+
+    > div:first-child{
+        position: fixed;
+        top: 77px;
+        width: 630px;
+        background-color: #00ff9c;
+        padding: 5px;
+        border-radius: 8px;
+        z-index: 10;
+    }
+
+    > div:first-child > div{
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-size: 20px;
+        border-radius: 8px;
+    }
+
+    > div:first-child > div:hover{
+        background-color: #047a4c;
+    }
+
+    > div:first-child > div > button{
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 30px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+
+    > div:first-child > div > button:hover{
+        background-color: #00ff9c;
+    }
+
+    > div:first-child > div > button > svg{
+        width: 15px;
+        height: 15px;
+    }
 
 
     h1{
@@ -236,3 +364,55 @@ export const IconsCard = styled.div`
         border: 2px solid #00ff9c;
     }
 `
+
+export const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+export const ModalContent = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+
+    div{
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        
+    }
+
+    p{
+        font-weight: bold;
+    }
+`;
+
+export const ModalButton = styled.button`
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #038a57;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover{
+    background-color: #035234;
+  }
+`;
+
+
+    
+
