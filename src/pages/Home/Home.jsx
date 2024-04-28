@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef} from 'react';
-import { FaPlus, FaBars,FaEdit, FaTrash, FaTimes, FaUserCircle} from "react-icons/fa";
+import { FaPlus, FaBars,FaEdit, FaTrash, FaTimes, FaUserCircle,FaRegPlusSquare} from "react-icons/fa";
 import LogoProjeto from '../../../public/logoSyncEdit.png'
 import { HomeDiv,
   LoadingBar,
@@ -11,7 +11,8 @@ import { HomeDiv,
   Content, 
   Section,
   CardsProjetos,  
-  Card, 
+  Card,
+  CardAdd,
   InfoCard,  
   IconsCard,
   DivListAmigos,
@@ -193,6 +194,10 @@ const confirmarExclusaoAmigo = () => {
   closeModal();
 }
 
+const CriarDocumento = () => {
+  
+}
+
   return (
     <HomeDiv ref={DivHome}>
 
@@ -259,7 +264,6 @@ const confirmarExclusaoAmigo = () => {
           <CardsProjetos>
 
               <Card>
-
                 <InfoCard>
                   <h2>Teste</h2>
                   <p>Ultimo Acesso: 30/01/2024 </p>
@@ -276,102 +280,11 @@ const confirmarExclusaoAmigo = () => {
                   </div>
                 </IconsCard>
 
-              </Card>
-              <Card>
+              </Card> 
 
-                <InfoCard>
-                  <h2>Teste</h2>
-                  <p>Ultimo Acesso: 30/01/2024 </p>
-                  <h3>Colaboradores</h3>
-                  <span>1</span>
-                </InfoCard>
-
-                <IconsCard>
-                  <div className="editarIcon">
-                    <FaEdit />
-                  </div>
-                  <div className="deletarIcon">
-                  <FaTrash />
-                  </div>
-                </IconsCard>
-
-              </Card>
-              <Card>
-
-                <InfoCard>
-                  <h2>Teste</h2>
-                  <p>Ultimo Acesso: 30/01/2024 </p>
-                  <h3>Colaboradores</h3>
-                  <span>2</span>
-                </InfoCard>
-
-                <IconsCard>
-                  <div className="editarIcon">
-                    <FaEdit />
-                  </div>
-                  <div className="deletarIcon">
-                  <FaTrash />
-                  </div>
-                </IconsCard>
-
-              </Card>
-              <Card>
-
-                <InfoCard>
-                  <h2>Teste</h2>
-                  <p>Ultimo Acesso: 30/01/2024 </p>
-                  <h3>Colaboradores</h3>
-                  <span>4</span>
-                </InfoCard>
-
-                <IconsCard>
-                  <div className="editarIcon">
-                    <FaEdit />
-                  </div>
-                  <div className="deletarIcon">
-                  <FaTrash />
-                  </div>
-                </IconsCard>
-
-              </Card>
-              <Card>
-
-                <InfoCard>
-                  <h2>Teste</h2>
-                  <p>Ultimo Acesso: 30/01/2024 </p>
-                  <h3>Colaboradores</h3>
-                  <span>5</span>
-                </InfoCard>
-
-                <IconsCard>
-                  <div className="editarIcon">
-                    <FaEdit />
-                  </div>
-                  <div className="deletarIcon">
-                  <FaTrash />
-                  </div>
-                </IconsCard>
-
-              </Card>
-              <Card>
-
-                <InfoCard>
-                  <h2>Teste</h2>
-                  <p>Ultimo Acesso: 30/01/2024 </p>
-                  <h3>Colaboradores</h3>
-                  <span>6</span>
-                </InfoCard>
-
-                <IconsCard>
-                  <div className="editarIcon">
-                    <FaEdit />
-                  </div>
-                  <div className="deletarIcon">
-                  <FaTrash />
-                  </div>
-                </IconsCard>
-
-              </Card>
+              <CardAdd>
+                <FaRegPlusSquare onClick={CriarDocumento} />
+              </CardAdd>
 
           </CardsProjetos>     
       </Section>

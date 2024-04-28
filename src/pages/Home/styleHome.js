@@ -307,6 +307,26 @@ export const Card = styled.div`
     gap: 10px;
     margin-bottom: 2rem;
 `
+export const CardAdd = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 210px;
+    height: 230px;
+    border-radius: 25px;
+    border: 2px solid #00ff9c;
+    background-color: #f5f5f5;
+    gap: 10px;
+    margin-bottom: 2rem;
+
+    svg{
+        width: 60px;
+        height: 60px;
+        color: #038a57;
+        cursor: pointer;
+    }
+`
 
 export const InfoCard = styled.div`
     border-radius: 25px 25px 0 0 ;
