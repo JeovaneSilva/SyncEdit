@@ -309,7 +309,6 @@ const closeEditorColaborador = async () => {
                 text: content,
                 ultimoAcesso: dataFormatada
               });
-              console.log(key)
             }
             
           });
@@ -457,7 +456,12 @@ const closeEditorColaborador = async () => {
     }
   }
 
+  const handleChange = (e) => {
+    setContent(editor.current.value);
+    console.log(content)
+  };
   
+
   return (
     <HomeDiv ref={DivHome}>
 
@@ -601,8 +605,7 @@ const closeEditorColaborador = async () => {
           value={content}
           config={config}
           tabIndex={1}
-          onBlur={(newContent) => setContent(newContent)}
-          onChange={(newContent) => {}}
+          onChange={handleChange}
         />
         <FooterEditor>
           <div>
