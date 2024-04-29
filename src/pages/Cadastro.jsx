@@ -80,6 +80,7 @@ const Cadastro = () => {
             const userId = userCredential.user.uid;
 
             await db.ref(`users/${userId}`).set({
+                id: userId,
                 email: email,
                 userName: userName
             }).then(() => {

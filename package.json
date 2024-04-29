@@ -13,6 +13,8 @@
     "@emotion/is-prop-valid": "^1.2.2",
     "dotenv": "^16.4.5",
     "firebase": "^10.11.0",
+    "jodit": "^4.2.10",
+    "jodit-react": "^4.0.30",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.1.0",

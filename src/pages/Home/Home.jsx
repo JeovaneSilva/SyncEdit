@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef} from 'react';
 import { FaPlus, FaBars,FaEdit, FaTrash, FaTimes, FaUserCircle,FaRegPlusSquare} from "react-icons/fa";
+import { auth, db } from '../../firebaseConfig'
+import JoditEditor from 'jodit-react';
 import LogoProjeto from '../../../public/logoSyncEdit.png'
 import { HomeDiv,
   LoadingBar,
@@ -18,30 +20,98 @@ import { HomeDiv,
   DivListAmigos,
   Overlay,
   Modal,
-  ModalContent,
-  ModalButton
+  ModalContentExcluir,
+  ModalContentDocumento,
+  ModalButton,
+  ModalEditor,
+  FooterEditor,
+  ModalContentAddAmigo
 } from './styleHome'
 
-import { auth, db } from '../../firebaseConfig'
+
 
 const Home = () => {
 
   const DivHome = useRef()
   const inputsearch = useRef()
+  const editor = useRef(null)
 
   const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState('');
   const [uid, setUid] = useState('');
+  const [IdCriadorDoc, setIdCriadorDoc] = useState('');
   const [sidebar, setSideBar] = useState(false)
   const [nomesUsuarios, setNomesUsuarios] = useState([]);
   const [nomesAmigos, setnomesAmigos] = useState([]);
   const [search, setSearch] = useState('');
   const [mostrarUsuarios, setMostrarUsuarios] = useState(false);
   const [textLoading, setTextLoading] = useState('Carregando');
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalExcluirOpen, setModalExcluirOpen] = useState(false);
+  const [modalExcluirProjetoOpen, setModalExcluirProjetoOpen] = useState(false);
+  const [modalCriarDocOpen, setModalCriarDocOpen] = useState(false);
+  const [modalEditor, setModalEditor] = useState(false);
+  const [modalEditorColaborador, setModalEditorColaborador] = useState(false);
+  const [modalAddAmigoProject, setmodalAddAmigoProject] = useState(false);
   const [amigoParaExcluir, setAmigoParaExcluir] = useState('');
+  const [nomeProjeto, setnomeProjeto] = useState('');
+  const [newProjeto, setnewProjeto] = useState([]);
+  const [projetosColaborador, setProjetosColaborador] = useState([]);
+  const [projetoExcluir, setprojetoExcluir] = useState('');
+  const [content, setContent] = useState('')
 
+
+  const CarregarProjetosProprios = async () => {
+    try {
+      const snapshot = await db.ref(`users/${uid}/documentos`).once('value');
+      const projetosData = snapshot.val();
   
+      if (projetosData) {
+        const projetosArray = Object.entries(projetosData).map(([key, projeto]) => ({
+          id: key,
+          nameProject: projeto.nameProject,
+          ultimoAcesso: projeto.ultimoAcesso,
+          colaboradores: projeto.colaboradores ? Object.keys(projeto.colaboradores).length : 0,
+          colaborador: false // Definir como falso, pois o usuário é o criador deste projeto
+        }));
+        setnewProjeto(projetosArray);
+      } else {
+        setnewProjeto([]);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar projetos próprios do usuário:", error);
+    }
+  };
+
+  const CarregarProjetosColaborador = async () => {
+    try {
+      const snapshot = await db.ref(`users`).once('value');
+      const usersData = snapshot.val();
+      const projetosColaboradorArray = [];
+  
+      if (usersData) {
+        Object.values(usersData).forEach((user) => {
+          if (user.documentos) {
+            Object.entries(user.documentos).forEach(([key, projeto]) => {
+              if (projeto.colaboradores && projeto.colaboradores[userName]) {
+                projetosColaboradorArray.push({
+                  id: key,
+                  nameProject: projeto.nameProject,
+                  ultimoAcesso: projeto.ultimoAcesso,
+                  colaboradores: projeto.colaboradores ? Object.keys(projeto.colaboradores).length : 0,
+                  colaborador: true, // Definir como verdadeiro, pois o usuário é um colaborador deste projeto
+                  texto: projeto.text // Adicionar o texto do projeto ao objeto
+                });
+              }
+            });
+          }
+        });
+      }
+      setProjetosColaborador(projetosColaboradorArray);
+    } catch (error) {
+      console.error("Erro ao carregar projetos de colaborador do usuário:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchUserName = async () => {
       try {
@@ -66,8 +136,6 @@ const Home = () => {
     fetchUserName();
   }, []);
 
-  
-
   useEffect(() => {
     // Função assíncrona para recuperar os nomes de usuários do Firebase
     const recuperarNomesUsuarios = async () => {
@@ -89,8 +157,6 @@ const Home = () => {
     // Chamada da função para recuperar os nomes de usuários ao montar o componente
     recuperarNomesUsuarios();
   }, []); // Executar apenas uma vez ao montar o componente
-
- 
 
   useEffect(() => {
     // Função assíncrona para recuperar os nomes de amigos do Firebase
@@ -116,16 +182,11 @@ const Home = () => {
     // Adicione uid como dependência para garantir que useEffect seja executado sempre que uid mudar
   }, [userName]);
   
-
-
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
     setMostrarUsuarios(value !== ''); // Define mostrarUsuarios como true se o campo de pesquisa não estiver vazio
   }
-
-
-  const filteredUsuarios = nomesUsuarios.filter(nome => nome !== userName).filter(nome => nome.toLowerCase().includes(search.toLowerCase()));
 
 
   const LogOut = (e) =>{
@@ -135,8 +196,6 @@ const Home = () => {
       alert('Erro ao fazer LogOut')
     })
   }
-
-  
 
   const ShowSidebar = () => {
       setSideBar(!sidebar)
@@ -148,56 +207,257 @@ const Home = () => {
     DivHome.current.style.overflow= 'auto';
 }
 
-const openModal = (amigo) => {
-  setAmigoParaExcluir(amigo);
-  setModalOpen(true);
-}
-
-const closeModal = () => {
-  setModalOpen(false);
-}
-
-const addAmigo = async (nomeAmigo) => {
-  try {
-    setLoading(true);
-    await db.ref(`users/${uid}/amigos`).push({
-      userName: nomeAmigo,
-    });
-  } catch (error) {
-    console.error("Erro ao adicionar amigo:", error);
-  } finally {
-    setTimeout(() => {
-      setTextLoading("Amigo adicionado com sucesso!");
-      setnomesAmigos([...nomesAmigos, nomeAmigo])
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000)
-    }, 2000); // Mudado de 3000 para 7000 para incluir os 2 segundos adicionais
+  const openModalExcluir = (amigo) => {
+    setAmigoParaExcluir(amigo);
+    setModalExcluirOpen(true);
   }
-}
-
-const deletarAmigo = async (nomeAmigo) => {
-  try {
-    const snapshot = await db.ref(`users/${uid}/amigos`).orderByChild('userName').equalTo(nomeAmigo).once('value');
-    const amigoKey = Object.keys(snapshot.val())[0];
-
-    await db.ref(`users/${uid}/amigos/${amigoKey}`).remove();
-    console.log("Amigo deletado com sucesso!");
-  } catch (error) {
-    console.error("Erro ao deletar amigo:", error);
-  }
-}
-
-const confirmarExclusaoAmigo = () => {
-  setnomesAmigos(nomesAmigos.filter(nome => nome !== amigoParaExcluir))
-  deletarAmigo(amigoParaExcluir);
-  closeModal();
-}
-
-const CriarDocumento = () => {
   
-}
+  const closeModalExcluir = () => {
+    setModalExcluirOpen(false);
+  }
 
+  const openModalExcluirProjeto = (nomeProjeto) => {
+    setprojetoExcluir(nomeProjeto);
+    setModalExcluirProjetoOpen(true);
+  }
+
+  const closeModalExcluirProjeto = () => {
+    setModalExcluirProjetoOpen(false);
+  }
+
+  const openModalNovoDoc = () => {
+    setModalCriarDocOpen(true);
+  }
+
+  const openModalEditor = async (projeto) => {
+    setnomeProjeto(projeto.nameProject);
+    setModalEditor(true);
+
+    try {
+      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(projeto.nameProject).once('value');
+      const projetoKey = Object.keys(snapshot.val())[0];
+      const textoProjeto = snapshot.val()[projetoKey].text;
+      setContent(textoProjeto);
+    } catch (error) {
+      console.error("Erro ao recuperar texto do projeto:", error);
+    }
+  }
+
+  const closeEditor = async () => {
+    const dataAtual = new Date();
+    const ano = dataAtual.getFullYear();
+    const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+    const dia = String(dataAtual.getDate()).padStart(2, '0');
+    const dataFormatada = `${ano}-${mes}-${dia}`; 
+
+    try {
+      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+      const projetoKey = Object.keys(snapshot.val())[0];
+      await db.ref(`users/${uid}/documentos/${projetoKey}`).update({ text: content,
+      ultimoAcesso: dataFormatada});
+      setModalEditor(false);
+      CarregarProjetosProprios();
+      CarregarProjetosColaborador();
+    } catch (error) {
+      console.error("Erro ao salvar o texto do projeto:", error);
+    }
+  }
+
+  const openModalEditorColaborador = async (projeto) => {
+  try {
+    const snapshot = await db.ref(`users`).once('value');
+    const usersData = snapshot.val();
+
+    if (usersData) {
+      Object.values(usersData).forEach((user) => {
+        if (user.documentos) {
+          Object.entries(user.documentos).forEach(([key, doc]) => {
+            if (doc.nameProject === projeto.nameProject) {
+              setContent(doc.text || ''); // Verifica se o texto está definido
+              setnomeProjeto(projeto.nameProject);
+              setModalEditorColaborador(true);
+            }
+          });
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Erro ao recuperar texto do projeto colaborador:", error);
+  }
+};
+
+// Função para fechar o editor do colaborador
+const closeEditorColaborador = async () => {
+  const dataAtual = new Date();
+  const ano = dataAtual.getFullYear();
+  const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+  const dia = String(dataAtual.getDate()).padStart(2, '0');
+  const dataFormatada = `${ano}-${mes}-${dia}`;
+
+  try {
+    const snapshot = await db.ref(`users`).once('value');
+    const usersData = snapshot.val();
+
+    if (usersData) {
+      Object.values(usersData).forEach(async (user) => {
+        if (user.documentos) {
+          Object.entries(user.documentos).forEach(async ([key, projeto]) => {
+            // Verifica se o documento corresponde ao projeto original com o mesmo nome do projeto atual
+            if (projeto.nameProject === nomeProjeto && !projeto.colaborador) {
+              // Atualiza o texto do projeto original com o conteúdo digitado pelo colaborador
+              await db.ref(`users/${user.id}/documentos/${key}`).update({
+                text: content,
+                ultimoAcesso: dataFormatada
+              });
+              console.log(key)
+            }
+            
+          });
+        }
+      });
+    }
+
+    // Atualiza o estado e recarrega os projetos
+    setModalEditorColaborador(false);
+    CarregarProjetosProprios();
+    CarregarProjetosColaborador();
+  } catch (error) {
+    console.error("Erro ao salvar o texto do projeto colaborador:", error);
+  }
+};
+
+  const closeModalNovoDoc = () => {
+    setModalCriarDocOpen(false);
+  }
+
+  const addAmigo = async (nomeAmigo) => {
+    try {
+      setLoading(true);
+      await db.ref(`users/${uid}/amigos`).push({
+        userName: nomeAmigo,
+      });
+    } catch (error) {
+      console.error("Erro ao adicionar amigo:", error);
+    } finally {
+      setTimeout(() => {
+        setTextLoading("Amigo adicionado com sucesso!");
+        setnomesAmigos([...nomesAmigos, nomeAmigo])
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000)
+      }, 2000); // Mudado de 3000 para 7000 para incluir os 2 segundos adicionais
+    }
+  }
+
+  const deletarAmigo = async (nomeAmigo) => {
+    try {
+      const snapshot = await db.ref(`users/${uid}/amigos`).orderByChild('userName').equalTo(nomeAmigo).once('value');
+      const amigoKey = Object.keys(snapshot.val())[0];
+
+      await db.ref(`users/${uid}/amigos/${amigoKey}`).remove();
+      console.log("Amigo deletado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao deletar amigo:", error);
+    }
+  }
+
+  const confirmarExclusaoAmigo = () => {
+    setnomesAmigos(nomesAmigos.filter(nome => nome !== amigoParaExcluir))
+    deletarAmigo(amigoParaExcluir);
+    closeModalExcluir();
+  }
+
+  const deletarProjeto = async (nomeProjeto) => {
+    try {
+      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+      const projetoKey = Object.keys(snapshot.val())[0];
+
+      await db.ref(`users/${uid}/documentos/${projetoKey}`).remove();
+      CarregarProjetosProprios()
+    } catch (error) {
+      console.error("Erro ao deletar amigo:", error);
+    }
+  }
+
+  const confirmarDeletarProjeto = () => {
+    setnewProjeto(newProjeto.filter(nomeProjeto => nomeProjeto !== projetoExcluir))
+    deletarProjeto(projetoExcluir);
+    closeModalExcluirProjeto();
+  }
+
+  const ConfirmNovoDoc = async () => {
+    try {
+      // Obtém o UID do usuário criador
+      const userId = auth.currentUser.uid;
+  
+      // Adiciona o novo documento com o UID do usuário criador
+      await db.ref(`users/${userId}/documentos`).push({
+        nameProject: nomeProjeto,
+        ultimoAcesso: "Novo",
+        colaboradores: 0,
+        text: "",
+        criadorUID: userId // Adiciona o UID do usuário criador
+      });
+  
+      // Atualiza a lista de projetos
+      CarregarProjetosProprios();
+  
+      // Fecha o modal após adicionar o novo documento
+      closeModalNovoDoc();
+    } catch (error) {
+      console.error("Erro ao adicionar projeto:", error);
+    }
+  }
+
+
+  useEffect(() => {
+    
+    // Chamada da função para recuperar os nomes de amigos ao montar o componente
+    CarregarProjetosProprios();
+    // Adicione uid como dependência para garantir que useEffect seja executado sempre que uid mudar
+  }, [userName]);
+
+  useEffect(() => {
+    
+    // Chamada da função para recuperar os nomes de amigos ao montar o componente
+    CarregarProjetosColaborador();
+    // Adicione uid como dependência para garantir que useEffect seja executado sempre que uid mudar
+  }, [userName]);
+
+  const filteredUsuarios = nomesUsuarios
+  .filter(nome => nome && nome !== userName) // Verifica se nome não é undefined antes de fazer o filtro
+  .filter(nome => nome.toLowerCase().includes(search.toLowerCase()));
+
+
+  const config = {
+    readonly: false, 
+    height: 500,
+  }
+
+  const NovoColaborador = async (nome) => {
+    try {
+      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+      const projetoKey = Object.keys(snapshot.val())[0];
+  
+      // Recuperar a lista atual de colaboradores do projeto
+      const colaboradoresAtuais = snapshot.val()[projetoKey].colaboradores || {};
+      
+      // Adicionar o novo colaborador à lista
+      colaboradoresAtuais[nome] = true;
+  
+      // Atualizar a lista de colaboradores no banco de dados
+      await db.ref(`users/${uid}/documentos/${projetoKey}`).update({
+        colaboradores: colaboradoresAtuais
+      });
+      
+      // Atualizar a lista de projetos
+      CarregarProjetosProprios();
+    } catch (error) {
+      console.error("Erro ao adicionar novo colaborador:", error);
+    }
+  }
+
+  
   return (
     <HomeDiv ref={DivHome}>
 
@@ -231,7 +491,7 @@ const CriarDocumento = () => {
                             <p>{nome}</p>
                           </div>
                           <div>
-                            <FaTrash onClick={() => openModal(nome)} />
+                            <FaTrash onClick={() => openModalExcluir(nome)} />
                           </div>
                         </div>
                       ))}
@@ -263,43 +523,152 @@ const CriarDocumento = () => {
 
           <CardsProjetos>
 
-              <Card>
-                <InfoCard>
-                  <h2>Teste</h2>
-                  <p>Ultimo Acesso: 30/01/2024 </p>
-                  <h3>Colaboradores</h3>
-                  <span>0</span>
-                </InfoCard>
+          {newProjeto.map((projeto) => (
+          <Card key={projeto.id}>
+            <InfoCard>
+              <h2>{projeto.nameProject}</h2>
+              <p>Ultimo Acesso: {projeto.ultimoAcesso}</p>
+              <h3>Colaboradores</h3>
+              <span>{projeto.colaboradores}</span>
+            </InfoCard>
+            <IconsCard>
+              <div>
+                <FaEdit onClick={() => openModalEditor(projeto)} />
+              </div>
+              <div>
+                <FaTrash onClick={() => openModalExcluirProjeto(projeto.nameProject)} />
+              </div>
+            </IconsCard>
+          </Card>
+        ))}
 
-                <IconsCard>
-                  <div className="editarIcon">
-                    <FaEdit />
-                  </div>
-                  <div className="deletarIcon">
-                  <FaTrash />
-                  </div>
-                </IconsCard>
-
-              </Card> 
-
+          {projetosColaborador.map((projeto) => (
+          <Card key={projeto.id}>
+            <InfoCard>
+              <h2>{projeto.nameProject}</h2>
+              <p>Ultimo Acesso: {projeto.ultimoAcesso}</p>
+              <h3>Colaborador</h3>
+              <span>{projeto.colaboradores}</span>
+            </InfoCard>
+            <IconsCard>
+              <div>
+                <FaEdit onClick={() => openModalEditorColaborador(projeto)} />
+              </div>
+            </IconsCard>
+          </Card>
+        ))}
+          
               <CardAdd>
-                <FaRegPlusSquare onClick={CriarDocumento} />
+                <FaRegPlusSquare onClick={openModalNovoDoc} />
               </CardAdd>
 
           </CardsProjetos>     
       </Section>
 
-      {modalOpen &&
+      {modalEditor &&
+        <ModalEditor>
+          <JoditEditor
+            ref={editor}
+            value={content}
+            config={config}
+            tabIndex={1}
+            onBlur={(newContent) => setContent(newContent)}
+            onChange={(newContent) => {}}
+          />
+          <FooterEditor>
+            <div>
+              <label>Editar Nome:</label>
+              <input type="text" />
+              <FaEdit/>
+            </div>
+
+            <div>
+              <button onClick={closeEditor}>Fechar</button> 
+
+              <button>Baixar Documento</button>
+
+             <button onClick={() => setmodalAddAmigoProject(true)}>Adicionar Amigos</button>
+            </div>
+          </FooterEditor>
+            
+        </ModalEditor>
+      }
+
+      {modalEditorColaborador && 
+        <ModalEditor>
+        <JoditEditor
+          ref={editor}
+          value={content}
+          config={config}
+          tabIndex={1}
+          onBlur={(newContent) => setContent(newContent)}
+          onChange={(newContent) => {}}
+        />
+        <FooterEditor>
+          <div>
+            <p>Nome</p>
+          </div>
+
+          <div>
+            <button onClick={closeEditorColaborador}>Fechar</button> 
+
+            <button>Baixar Documento</button>
+          </div>
+        </FooterEditor>
+          
+      </ModalEditor>
+      }
+
+      {modalExcluirOpen &&
         <Modal>
-          <ModalContent>
+          <ModalContentExcluir>
             <p>Deseja realmente excluir {amigoParaExcluir}?</p>
             <div>
               <ModalButton onClick={confirmarExclusaoAmigo}>Confirmar</ModalButton>
-              <ModalButton onClick={closeModal}>Cancelar</ModalButton>
+              <ModalButton onClick={closeModalExcluir}>Cancelar</ModalButton>
             </div>
-          </ModalContent>
+          </ModalContentExcluir>
         </Modal>
       }
+
+      {modalExcluirProjetoOpen &&
+        <Modal>
+          <ModalContentExcluir>
+            <p>Deseja realmente excluir {projetoExcluir}?</p>
+            <div>
+              <ModalButton onClick={confirmarDeletarProjeto}>Confirmar</ModalButton>
+              <ModalButton onClick={closeModalExcluirProjeto}>Cancelar</ModalButton>
+            </div>
+          </ModalContentExcluir>
+        </Modal>
+      }
+
+      {modalCriarDocOpen &&
+        <Modal>
+          <ModalContentDocumento>
+            <p>Insira o nome do documento</p>
+            <input type="text" onChange={(e) => setnomeProjeto(e.target.value)}/>
+            <div>
+              <ModalButton onClick={ConfirmNovoDoc}>Confirmar</ModalButton>
+              <ModalButton onClick={closeModalNovoDoc}>Cancelar</ModalButton>
+            </div>
+          </ModalContentDocumento>
+        </Modal>
+      }
+
+      {modalAddAmigoProject && 
+        <Modal>
+          <ModalContentAddAmigo>
+          {nomesAmigos.map((nome, index) => (
+                        <div key={index}>
+                            <p>{nome}</p>
+                            <FaPlus onClick={() => NovoColaborador(nome)}/>
+                        </div>
+                      ))}
+                      <ModalButton onClick={() => setmodalAddAmigoProject(false)}>Sair</ModalButton>
+          </ModalContentAddAmigo>
+        </Modal>}
+      
     </HomeDiv>
   )
 }
