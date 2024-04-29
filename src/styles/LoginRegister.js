@@ -23,6 +23,12 @@ export const Main = styled.main`
         justify-content: center;
         flex-direction: column;
     }
+
+    @media (max-width:500px){
+        img{
+            display: none;
+        }
+    }
  
 `
 
