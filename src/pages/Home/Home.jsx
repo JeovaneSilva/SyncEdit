@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef, useMemo} from 'react';
 import { FaPlus, FaBars,FaEdit, FaTrash, FaTimes, FaUserCircle,FaRegPlusSquare} from "react-icons/fa";
 import { auth, db } from '../../firebaseConfig'
 import JoditEditor from 'jodit-react';
@@ -39,7 +39,6 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState('');
   const [uid, setUid] = useState('');
-  const [IdCriadorDoc, setIdCriadorDoc] = useState('');
   const [sidebar, setSideBar] = useState(false)
   const [nomesUsuarios, setNomesUsuarios] = useState([]);
   const [nomesAmigos, setnomesAmigos] = useState([]);
@@ -263,6 +262,18 @@ const Home = () => {
     }
   }
 
+  const changeContent = async (newContent) => {
+    setContent(newContent)
+
+    try {
+      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+      const projetoKey = Object.keys(snapshot.val())[0];
+      await db.ref(`users/${uid}/documentos/${projetoKey}`).update({ text: content});
+    } catch (error) {
+      console.error("Erro ao salvar o texto do projeto:", error);
+    }
+  }
+
   const openModalEditorColaborador = async (projeto) => {
   try {
     const snapshot = await db.ref(`users`).once('value');
@@ -324,6 +335,35 @@ const closeEditorColaborador = async () => {
     console.error("Erro ao salvar o texto do projeto colaborador:", error);
   }
 };
+
+const changeContentColaboradores = async(newContent) => {
+  setContent(newContent)
+
+  try {
+    const snapshot = await db.ref(`users`).once('value');
+    const usersData = snapshot.val();
+
+    if (usersData) {
+      Object.values(usersData).forEach(async (user) => {
+        if (user.documentos) {
+          Object.entries(user.documentos).forEach(async ([key, projeto]) => {
+            // Verifica se o documento corresponde ao projeto original com o mesmo nome do projeto atual
+            if (projeto.nameProject === nomeProjeto && !projeto.colaborador) {
+              // Atualiza o texto do projeto original com o conteúdo digitado pelo colaborador
+              await db.ref(`users/${user.id}/documentos/${key}`).update({
+                text: content
+              });
+            }
+            
+          });
+        }
+      });
+    }
+
+  }catch (error) {
+    console.error("Erro ao salvar o texto do projeto colaborador:", error);
+  }
+}
 
   const closeModalNovoDoc = () => {
     setModalCriarDocOpen(false);
@@ -397,7 +437,7 @@ const closeEditorColaborador = async () => {
         text: "",
         criadorUID: userId // Adiciona o UID do usuário criador
       });
-  
+        
       // Atualiza a lista de projetos
       CarregarProjetosProprios();
   
@@ -428,10 +468,9 @@ const closeEditorColaborador = async () => {
   .filter(nome => nome.toLowerCase().includes(search.toLowerCase()));
 
 
-  const config = {
-    readonly: false, 
-    height: 500,
-  }
+  const config = useMemo(() => ({
+    height: 500
+  }), []); // A configuração só será recriada se as dependências mudarem
 
   const NovoColaborador = async (nome) => {
     try {
@@ -456,12 +495,7 @@ const closeEditorColaborador = async () => {
     }
   }
 
-  const handleChange = (e) => {
-    setContent(editor.current.value);
-    console.log(content)
-  };
   
-
   return (
     <HomeDiv ref={DivHome}>
 
@@ -572,13 +606,11 @@ const closeEditorColaborador = async () => {
       {modalEditor &&
         <ModalEditor>
           <JoditEditor
-            ref={editor}
-            value={content}
-            config={config}
-            tabIndex={1}
-            onBlur={(newContent) => setContent(newContent)}
-            onChange={(newContent) => {}}
-          />
+          ref={editor}
+          value={content}
+          config={config}
+          onChange={changeContent}
+        />
           <FooterEditor>
             <div>
               <label>Editar Nome:</label>
@@ -604,8 +636,7 @@ const closeEditorColaborador = async () => {
           ref={editor}
           value={content}
           config={config}
-          tabIndex={1}
-          onChange={handleChange}
+          onChange={changeContentColaboradores}
         />
         <FooterEditor>
           <div>
