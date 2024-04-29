@@ -263,6 +263,17 @@ const Home = () => {
   }
 
   const changeContent = async (newContent) => {
+    const projeto = nomeProjeto
+
+    try {
+      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(projeto.nameProject).once('value');
+      const projetoKey = Object.keys(snapshot.val())[0];
+      const textoProjeto = snapshot.val()[projetoKey].text;
+      setContent(textoProjeto);
+    } catch (error) {
+      console.error("Erro ao recuperar texto do projeto:", error);
+    }
+    
     setContent(newContent)
 
     try {
@@ -337,6 +348,27 @@ const closeEditorColaborador = async () => {
 };
 
 const changeContentColaboradores = async(newContent) => {
+ const projeto = nomeProjeto
+
+  try {
+    const snapshot = await db.ref(`users`).once('value');
+    const usersData = snapshot.val();
+
+    if (usersData) {
+      Object.values(usersData).forEach((user) => {
+        if (user.documentos) {
+          Object.entries(user.documentos).forEach(([key, doc]) => {
+            if (doc.nameProject === projeto.nameProject) {
+              setContent(doc.text || ''); // Verifica se o texto está definido
+            }
+          });
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Erro ao recuperar texto do projeto colaborador:", error);
+  }
+
   setContent(newContent)
 
   try {
