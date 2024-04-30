@@ -28,6 +28,10 @@ export const Main = styled.main`
         img{
             display: none;
         }
+
+        form{
+            width: 300px;
+        }
     }
  
 `
@@ -56,6 +60,21 @@ export const TopForm = styled.div`
     p{
         margin: 10px 0 0 0;
         font-size: 25px;
+    }
+
+    @media (max-width:500px){
+
+        h1{
+            font-size: 30px;
+        }
+
+        hr{
+            width: 130px;
+        }
+
+        p{
+            font-size: 20px;
+        }
     }
 `
 
@@ -87,12 +106,24 @@ export const DadosForm = styled.div`
         border-radius: 0 10px 10px 10px;
         padding: 3px;
     }
+
+    @media (max-width:500px){
+        
+        input{
+            width: 250px;
+        }
+
+    }
 `
 
 export const MostrarSenha = styled.div`
     margin-top: 5px;
     display: flex;
     font-weight: 400;
+
+    @media (max-width:500px){
+        font-size: 15px;
+    }
 `
 
 export const ButtonsForm = styled.div`
@@ -107,6 +138,7 @@ export const ButtonsForm = styled.div`
     button[disabled] {
         opacity: 0.8;
     }
+
 `
 
 export const ButtonEntrarRegistrar = styled.button`
@@ -119,6 +151,10 @@ export const ButtonEntrarRegistrar = styled.button`
     font-weight: 600;
     cursor: pointer;
     margin-top: 1rem;
+
+    @media (max-width:500px){
+        width: 150px;
+    }
 `
 
 export const EsqueciSenha = styled.div`
@@ -127,6 +163,10 @@ export const EsqueciSenha = styled.div`
     cursor: pointer;
     font-size: 15px;
     margin-top: 0.5rem;
+
+    @media (max-width:500px){
+        font-size: 12px;
+    }
 `
 
 export const CadastrarDiv = styled.div`
@@ -146,4 +186,18 @@ export const CadastrarDiv = styled.div`
         border-radius: 18px;
         width: ${(props) => (props.$LoginRegister === "buttonCadastrar" ? "auto" : "100px")};
         }
+
+    @media (max-width:500px){
+
+        P{
+            font-size: 12px;
+        }
+
+        button{
+            font-size: 12px;
+            width:85px;
+            height: 30px;
+            padding : 5px;
+        }
+    }
 `

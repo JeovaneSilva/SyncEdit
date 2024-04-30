@@ -19,6 +19,10 @@ export const HeaderContainer = styled.header`
     background-color: white;
     top: 0;
     z-index: 10;
+
+    @media (max-width:500px){
+        height: 80px;
+    }
 `
 
 export const LoadingBar = styled.div`
@@ -64,6 +68,15 @@ export const Logo = styled.div`
         width: 70px;
         height: 70px;
     }
+
+    @media (max-width:500px){
+        margin-left: 10px;
+
+        img{
+            width: 50px;
+            height: 50px;
+        }   
+    }
 `
 
 export const DivPesquisa = styled.div`
@@ -76,7 +89,6 @@ export const DivPesquisa = styled.div`
     border-radius: 8px;
     padding: 10px;
     height: 60px;
-    gap: 5px;
 
     input{
         width: 100%;
@@ -88,8 +100,13 @@ export const DivPesquisa = styled.div`
         outline: none;
     }
 
-`
+    @media (max-width:500px){
+        margin-right: 20px;
+        width: 200px;
+        height: 40px;
+    }
 
+`
 export const MenuToggle = styled.div`
     margin-right: 36px;
     
@@ -97,6 +114,15 @@ export const MenuToggle = styled.div`
         width: 30px;
         height: 30px;
         cursor: pointer;
+    }
+
+    @media (max-width:500px){
+        margin-right: 10px;
+
+        svg{
+            width: 20px;
+            height: 20px;
+        }
     }
 `
 
@@ -280,6 +306,14 @@ export const Section = styled.section`
         font-size: 40px;
         text-align: center;
     }
+
+    @media (max-width:500px){
+        h1{
+            margin-top: 51px;
+            font-size: 25px;
+        }
+    }
+   
 `
 
 export const CardsProjetos = styled.div`
@@ -291,6 +325,11 @@ export const CardsProjetos = styled.div`
     justify-content: center;
     align-items: center;
     gap: 20px;
+
+    @media (max-width:500px){
+        grid-template-columns: repeat(1, minmax(140px, 380px));
+        place-items: center;
+    }
 
 `
 
@@ -306,6 +345,10 @@ export const Card = styled.div`
     background-color: #f5f5f5;
     gap: 10px;
     margin-bottom: 2rem;
+
+    @media (max-width:500px){
+        width: 210px;
+    }
 `
 export const CardAdd = styled.div`
     display: flex;
@@ -438,14 +481,19 @@ export const FooterEditor = styled.div`
         font-size: 20px;
     }
 
-    > div:first-child > input{
+    > div:first-child > div{
+        display: flex;
+    }
+
+
+    > div:first-child > div > input{
         margin: 0 10px;
        height: 35px;
        width: 200px;
        padding: 8px;
     }
 
-    > div:first-child > svg{
+    > div:first-child > div > svg{
         width: 35px;
         color: #038a57;
         height: 35px;
@@ -454,11 +502,17 @@ export const FooterEditor = styled.div`
 
     > div:last-child{
         display: flex;
-        gap: 7rem;
+        gap: 3rem;
         margin-right: 2rem;
     }
 
+    > div:last-child > div {
+        display: flex;
+        gap: 3rem;
+    }
+
     > div:last-child button{
+        width: 150px;
         cursor: pointer;
         padding: 8px;
         height: 45px;
@@ -469,14 +523,57 @@ export const FooterEditor = styled.div`
         border: 1px solid black;
     }
 
-    > div:last-child button:active {
-        opacity: 0.8;
+    @media (max-width:500px){
+        margin-bottom: 1rem;
+
+        > div:first-child{
+            margin-left: 10px;
+            flex-direction: column;
+            align-items: start;
+            justify-content: center;
+        }
+
+        > div:first-child > label{
+            font-size: 13px;
+        }
+
+        > div:first-child > div{
+            display: flex;
+        }
+
+        > div:first-child > div > input{
+            margin: 0 10px 0 0;
+            height: 25px;
+            width: 100px;
+            padding: 8px;
+        }
+
+        > div:first-child > div > svg{
+            width: 25px;
+            height: 25px;
+        }
+
+        > div:last-child{
+            display: flex;
+            gap: 1rem;
+            margin-right: 10px;
+        }
+
+        > div:last-child > div {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        > div:last-child button{
+            padding: 5px;
+            height: 40px;
+            font-size: 15px;
+            width: 80px;
+        }
     }
 
-    > div:last-child button[disabled] {
-        opacity: 0.8;
-        background-color: black;
-    }
+    
 `
 
 export const ModalContentExcluir = styled.div`

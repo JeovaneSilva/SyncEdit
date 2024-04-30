@@ -293,26 +293,18 @@ const salvarContent = async () => {
 
   try {
     // Obtém o texto atual do projeto antes de atualizá-lo
-    const textoAtual = content;
 
     const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
     snapshot.forEach((projetoSnapshot) => {
-      const projetoKey = projetoSnapshot.key;
       
       // Atualiza o texto e o último acesso do projeto
       projetoSnapshot.ref.update({
-        text: textoAtual,
+        text: content,
         ultimoAcesso: dataFormatada
       });
-
-      // Armazena as ações realizadas, como exemplo, você pode salvar o texto atual
-      db.ref(`users/${uid}/documentos/${projetoKey}/actions`).push({
-        actionType: 'salvar', // Tipo de ação (salvar, editar, etc.)
-        timestamp: dataAtual.getTime(), // Horário da ação
-        content: textoAtual // Conteúdo do texto após a ação
-      });
+      
     });
-    console.log(textoAtual);
+    
   } catch (error) {
     console.error("Erro ao salvar o texto do projeto:", error);
   }
@@ -605,18 +597,24 @@ const changeContentColaboradores = async(newContent) => {
           <FooterEditor>
             <div>
               <label>Editar Nome:</label>
-              <input type="text" />
-              <FaEdit/>
+              <div>
+                <input type="text" />
+                <FaEdit/>
+              </div>
             </div>
 
             <div>
             
-            <button ref={ButonSalvar} disabled={true} onClick={salvarContent}>Salvar</button>
-              <button onClick={closeEditor}>Fechar</button> 
+              <div>
+                <button ref={ButonSalvar} onClick={salvarContent}>Salvar</button>
+                <button onClick={closeEditor}>Fechar</button>
+              </div> 
 
-              <button>Baixar Documento</button>
+              <div>
+                <button>Baixar</button>
+                <button onClick={() => setmodalAddAmigoProject(true)}>Convidar</button>
+              </div>
 
-             <button onClick={() => setmodalAddAmigoProject(true)}>Adicionar Amigos</button>
             </div>
           </FooterEditor>
             
@@ -632,15 +630,24 @@ const changeContentColaboradores = async(newContent) => {
           onChange={changeContentColaboradores}
         />
         <FooterEditor>
-          <div>
-            <p>Nome</p>
-          </div>
+            <div>
+              <label>Editar Nome:</label>
+              <div>
+                <input type="text" />
+                <FaEdit/>
+              </div>
+            </div>
 
           <div>
-            <button ref={ButonSalvar} disabled={true}  onClick={SalvarContentColab}>Salvar</button>
-            <button onClick={closeEditorColaborador}>Fechar</button> 
+            <div>
+              <button ref={ButonSalvar} onClick={SalvarContentColab}>Salvar</button>
+              <button onClick={closeEditorColaborador}>Fechar</button>
+            </div>
 
-            <button>Baixar Documento</button>
+            <div>
+              <button>Baixar</button>
+              <button>Membros</button>
+            </div>
           </div>
         </FooterEditor>
           
