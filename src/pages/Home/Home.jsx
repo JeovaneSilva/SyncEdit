@@ -292,15 +292,27 @@ const salvarContent = async () => {
   const dataFormatada = `${ano}-${mes}-${dia}`;
 
   try {
+    // Obtém o texto atual do projeto antes de atualizá-lo
+    const textoAtual = content;
+
     const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
     snapshot.forEach((projetoSnapshot) => {
       const projetoKey = projetoSnapshot.key;
+      
+      // Atualiza o texto e o último acesso do projeto
       projetoSnapshot.ref.update({
-        text: content,
+        text: textoAtual,
         ultimoAcesso: dataFormatada
       });
+
+      // Armazena as ações realizadas, como exemplo, você pode salvar o texto atual
+      db.ref(`users/${uid}/documentos/${projetoKey}/actions`).push({
+        actionType: 'salvar', // Tipo de ação (salvar, editar, etc.)
+        timestamp: dataAtual.getTime(), // Horário da ação
+        content: textoAtual // Conteúdo do texto após a ação
+      });
     });
-    console.log(content);
+    console.log(textoAtual);
   } catch (error) {
     console.error("Erro ao salvar o texto do projeto:", error);
   }
@@ -329,7 +341,7 @@ const SalvarContentColab = async () => {
                 ultimoAcesso: dataFormatada
               })
             }
-            console.log(content);
+            
           });
         }
       });
@@ -341,6 +353,7 @@ const SalvarContentColab = async () => {
 
 const changeContentColaboradores = async(newContent) => {
   setContent(newContent)
+  
 }
 
   const closeModalNovoDoc = () => {
