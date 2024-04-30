@@ -35,6 +35,7 @@ const Home = () => {
   const DivHome = useRef()
   const inputsearch = useRef()
   const editor = useRef(null)
+  const ButonSalvar = useRef(null)
 
   const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState('');
@@ -243,35 +244,14 @@ const Home = () => {
   }
 
   const closeEditor = async () => {
-    const dataAtual = new Date();
-    const ano = dataAtual.getFullYear();
-    const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
-    const dia = String(dataAtual.getDate()).padStart(2, '0');
-    const dataFormatada = `${ano}-${mes}-${dia}`; 
-
-    try {
-      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
-      const projetoKey = Object.keys(snapshot.val())[0];
-      await db.ref(`users/${uid}/documentos/${projetoKey}`).update({ text: content,
-      ultimoAcesso: dataFormatada});
       setModalEditor(false);
       CarregarProjetosProprios();
       CarregarProjetosColaborador();
-    } catch (error) {
-      console.error("Erro ao salvar o texto do projeto:", error);
-    }
   }
 
   const changeContent = async (newContent) => {
     setContent(newContent)
-
-    try {
-      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
-      const projetoKey = Object.keys(snapshot.val())[0];
-      await db.ref(`users/${uid}/documentos/${projetoKey}`).update({ text: content});
-    } catch (error) {
-      console.error("Erro ao salvar o texto do projeto:", error);
-    }
+    ButonSalvar.current.disabled=false
   }
 
   const openModalEditorColaborador = async (projeto) => {
@@ -299,6 +279,34 @@ const Home = () => {
 
 // Função para fechar o editor do colaborador
 const closeEditorColaborador = async () => {
+    setModalEditorColaborador(false);
+    CarregarProjetosProprios();
+    CarregarProjetosColaborador();
+};
+
+const salvarContent = async () => {
+  const dataAtual = new Date();
+  const ano = dataAtual.getFullYear();
+  const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+  const dia = String(dataAtual.getDate()).padStart(2, '0');
+  const dataFormatada = `${ano}-${mes}-${dia}`;
+
+  try {
+    const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+    snapshot.forEach((projetoSnapshot) => {
+      const projetoKey = projetoSnapshot.key;
+      projetoSnapshot.ref.update({
+        text: content,
+        ultimoAcesso: dataFormatada
+      });
+    });
+    console.log(content);
+  } catch (error) {
+    console.error("Erro ao salvar o texto do projeto:", error);
+  }
+};
+
+const SalvarContentColab = async () => {
   const dataAtual = new Date();
   const ano = dataAtual.getFullYear();
   const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
@@ -319,51 +327,20 @@ const closeEditorColaborador = async () => {
               await db.ref(`users/${user.id}/documentos/${key}`).update({
                 text: content,
                 ultimoAcesso: dataFormatada
-              });
+              })
             }
-            
+            console.log(content);
           });
         }
       });
     }
-
-    // Atualiza o estado e recarrega os projetos
-    setModalEditorColaborador(false);
-    CarregarProjetosProprios();
-    CarregarProjetosColaborador();
   } catch (error) {
     console.error("Erro ao salvar o texto do projeto colaborador:", error);
   }
-};
+}
 
 const changeContentColaboradores = async(newContent) => {
-
   setContent(newContent)
-
-  try {
-    const snapshot = await db.ref(`users`).once('value');
-    const usersData = snapshot.val();
-
-    if (usersData) {
-      Object.values(usersData).forEach(async (user) => {
-        if (user.documentos) {
-          Object.entries(user.documentos).forEach(async ([key, projeto]) => {
-            // Verifica se o documento corresponde ao projeto original com o mesmo nome do projeto atual
-            if (projeto.nameProject === nomeProjeto && !projeto.colaborador) {
-              // Atualiza o texto do projeto original com o conteúdo digitado pelo colaborador
-              await db.ref(`users/${user.id}/documentos/${key}`).update({
-                text: content
-              });
-            }
-            
-          });
-        }
-      });
-    }
-
-  }catch (error) {
-    console.error("Erro ao salvar o texto do projeto colaborador:", error);
-  }
 }
 
   const closeModalNovoDoc = () => {
@@ -620,6 +597,8 @@ const changeContentColaboradores = async(newContent) => {
             </div>
 
             <div>
+            
+            <button ref={ButonSalvar} disabled={true} onClick={salvarContent}>Salvar</button>
               <button onClick={closeEditor}>Fechar</button> 
 
               <button>Baixar Documento</button>
@@ -645,6 +624,7 @@ const changeContentColaboradores = async(newContent) => {
           </div>
 
           <div>
+            <button onClick={SalvarContentColab}>Salvar</button>
             <button onClick={closeEditorColaborador}>Fechar</button> 
 
             <button>Baixar Documento</button>

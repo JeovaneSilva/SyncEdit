@@ -454,7 +454,7 @@ export const FooterEditor = styled.div`
 
     > div:last-child{
         display: flex;
-        gap: 11rem;
+        gap: 7rem;
         margin-right: 2rem;
     }
 
@@ -467,6 +467,15 @@ export const FooterEditor = styled.div`
         background-color: #038a57;
         color: white;
         border: 1px solid black;
+    }
+
+    > div:last-child button:active {
+        opacity: 0.8;
+    }
+
+    > div:last-child button[disabled] {
+        opacity: 0.8;
+        background-color: black;
     }
 `
 
