@@ -637,7 +637,7 @@ const changeContentColaboradores = async(newContent) => {
           </div>
 
           <div>
-            <button onClick={SalvarContentColab}>Salvar</button>
+            <button ref={ButonSalvar} disabled={true}  onClick={SalvarContentColab}>Salvar</button>
             <button onClick={closeEditorColaborador}>Fechar</button> 
 
             <button>Baixar Documento</button>
