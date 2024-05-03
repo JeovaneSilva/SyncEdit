@@ -4,12 +4,12 @@ import "firebase/compat/database"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCLLB7UiBT_N2MUNJJxGnShWkY5R2iZAoU",
-  authDomain: "syncedit-9783b.firebaseapp.com",
-  projectId: "syncedit-9783b",
-  storageBucket: "syncedit-9783b.appspot.com",
-  messagingSenderId: "852722831706",
-  appId: "1:852722831706:web:4cf1bc2e00619812122363"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = firebase.initializeApp(firebaseConfig);
