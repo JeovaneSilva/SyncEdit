@@ -616,9 +616,7 @@ const changeContentColaboradores = async(newContent) => {
               </div>
 
             </div>
-            
-          </FooterEditor>
-            
+          </FooterEditor>  
         </ModalEditor>
       }
 

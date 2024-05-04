@@ -456,8 +456,7 @@ export const ModalEditor = styled.div`
   align-items: center;
   justify-content: space-between;
   z-index: 999;
-  overflow-y: hidden;
-
+  
   > div:first-child{
     width: 100vw;
   }
@@ -484,7 +483,6 @@ export const FooterEditor = styled.div`
     > div:first-child > div{
         display: flex;
     }
-
 
     > div:first-child > div > input{
         margin: 0 10px;
@@ -524,11 +522,10 @@ export const FooterEditor = styled.div`
     }
 
     @media (max-width:500px){
-        align-items: start;
-        margin-bottom: -15px;
 
         > div:first-child{
             margin-left: 10px;
+            margin-bottom: 50px;
             flex-direction: column;
             align-items: start;
             justify-content: center;
@@ -555,6 +552,7 @@ export const FooterEditor = styled.div`
         }
 
         > div:last-child{
+            margin-bottom: 50px;
             display: flex;
             gap: 1rem;
             margin-right: 10px;

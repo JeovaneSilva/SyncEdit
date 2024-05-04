@@ -7,7 +7,7 @@ const globalStyle = createGlobalStyle`
         margin: 0;
         box-sizing: border-box;
         font-family: "Nunito", sans-serif;
-        overflow: hidden;
+        overflow-x: hidden;
     }
 
 `
