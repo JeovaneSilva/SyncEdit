@@ -7,7 +7,6 @@ export const HomeDiv = styled.div`
     height: 100vh;
 `
 
-
 export const HeaderContainer = styled.header`
     width: 100vw;
     height: 90px;
@@ -458,16 +457,16 @@ export const ModalEditor = styled.div`
   justify-content: space-between;
   z-index: 999;
 
-  > div{
+  > div:first-child{
     width: 100vw;
   }
 
 `;
 
 export const FooterEditor = styled.div`
-    margin-bottom: 2rem;
     display: flex;
     width: 100vw;
+    height: 20vh;
     justify-content: space-between;
     align-items: center;
 
@@ -524,7 +523,6 @@ export const FooterEditor = styled.div`
     }
 
     @media (max-width:500px){
-        margin-bottom: 1rem;
 
         > div:first-child{
             margin-left: 10px;

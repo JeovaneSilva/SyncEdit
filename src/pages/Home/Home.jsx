@@ -452,7 +452,7 @@ const changeContentColaboradores = async(newContent) => {
 
 
   const config = useMemo(() => ({
-    height: 500
+    height: "80vh"
   }), []); // A configuração só será recriada se as dependências mudarem
 
   const NovoColaborador = async (nome) => {
