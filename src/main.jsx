@@ -6,6 +6,7 @@ import Home from './pages/Home/Home.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
 import GlobalStyle from './styles/globalStyle'
 
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 const router = createBrowserRouter([
