@@ -466,7 +466,7 @@ export const ModalEditor = styled.div`
 export const FooterEditor = styled.div`
     display: flex;
     width: 100vw;
-    height: 20vh;
+    height: 30vh;
     justify-content: space-between;
     align-items: center;
 
