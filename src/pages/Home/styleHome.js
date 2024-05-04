@@ -456,6 +456,7 @@ export const ModalEditor = styled.div`
   align-items: center;
   justify-content: space-between;
   z-index: 999;
+  overflow-y: hidden;
 
   > div:first-child{
     width: 100vw;
@@ -466,9 +467,9 @@ export const ModalEditor = styled.div`
 export const FooterEditor = styled.div`
     display: flex;
     width: 100vw;
-    height: 20vh;
+    height: 25vh;
     justify-content: space-between;
-    align-items: start;
+    align-items: center;
 
     > div:first-child{
         margin-left: 2rem;
@@ -523,6 +524,8 @@ export const FooterEditor = styled.div`
     }
 
     @media (max-width:500px){
+        align-items: start;
+        margin-bottom: -15px;
 
         > div:first-child{
             margin-left: 10px;
