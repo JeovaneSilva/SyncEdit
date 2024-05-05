@@ -20,7 +20,6 @@ export const Section = styled.section`
         top: 77px;
         width: 630px;
         background-color: #00ff9c;
-        padding: 5px;
         border-radius: 8px;
         z-index: 10;
     }
@@ -80,7 +79,7 @@ export const Section = styled.section`
         }
 
         > div:first-child > div{
-        font-size: 15px;
+        font-size: 13px;
     }
 
     > div:first-child > div > button{

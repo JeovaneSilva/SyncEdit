@@ -61,6 +61,50 @@ export const CardAdd = styled.div`
         color: #038a57;
         cursor: pointer;
     }
+
+    p{
+        font-size: 30px;
+        font-weight: bolder;
+        color: #038a57;
+    }
+
+    @media (max-width:500px){
+        display: none;
+    }
+`
+export const MobileAdd = styled.div`
+    position: fixed;
+    display: none;
+    align-items: center;
+    bottom: 0;
+    justify-content: center;
+    width: 100vw;
+    height: 45px;
+    background-color: #00ff9c;
+
+    div{
+        position: fixed;
+        margin-bottom: 40px;
+        width: 70px;
+        height: 70px;
+        background-color: #08c57c;
+        padding: 10px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    svg{
+        width: 75%;
+        height: 75%;
+        color: white;
+        cursor: pointer;
+    }
+
+    @media (max-width:500px){
+        display: flex;
+    }
 `
 
 export const InfoCard = styled.div`
@@ -103,11 +147,16 @@ export const IconsCard = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
         width: 65px;
         height: 32px;
         border-radius: 25px;
         background-color: #00ff9c;
+    }
+
+    div:first-child > svg, div:last-child > svg{
+        font-size: 18px;
+        width: 100%;
+        height: 70%;
     }
 
     div:last-child{

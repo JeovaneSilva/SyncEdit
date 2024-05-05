@@ -109,3 +109,45 @@ export const CarregarProjetosColaborador = async (uid, userName, setProjetosCola
       console.error("Erro ao carregar projetos de colaborador do usuário:", error);
     }
   };
+
+  // adicionar colaboradores
+  export const fetchColaboradores = async (uid,nomeProjeto,setTodosColaboradores) => {
+    try {
+      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+      const projetoKey = Object.keys(snapshot.val())[0];
+      const colaboradoresAtuais = snapshot.val()[projetoKey].colaboradores || {};
+      setTodosColaboradores(colaboradoresAtuais);
+    } catch (error) {
+      console.error("Erro ao buscar colaboradores:", error);
+    }
+  };
+
+  export const fetchColaboradoresDoProjeto = async (uid, nomeProjeto, setColaboradoresProjeto) => {
+    try {
+      const snapshot = await db.ref(`users`).once('value');
+      const usersData = snapshot.val();
+      const colaboradoresProjetoArray = [];
+  
+      if (usersData) {
+        Object.values(usersData).forEach((user) => {
+          if (user.documentos) {
+            Object.entries(user.documentos).forEach(([key, projeto]) => {
+              if (projeto.nameProject === nomeProjeto && projeto.colaboradores) {
+                Object.keys(projeto.colaboradores).forEach((colaborador) => {
+                  if (colaborador !== uid) { // Excluir o próprio usuário da lista de colaboradores
+                    colaboradoresProjetoArray.push({
+                      uid: colaborador,
+                      nome: colaborador, // Aqui você pode adicionar mais detalhes do colaborador, como nome, se necessário
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+      setColaboradoresProjeto(colaboradoresProjetoArray);
+    } catch (error) {
+      console.error("Erro ao buscar colaboradores do projeto:", error);
+    }
+  };

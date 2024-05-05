@@ -20,18 +20,28 @@ const filteredUsuarios = nomesUsuarios
     }
   }
 
+  const hasResultados = filteredUsuarios.length > 0;
+  
+
   return (
     <div>
-          {filteredUsuarios.map((nome, index) => (
-            <div key={index}>
-              <p>{nome}</p>
-              {!nomesAmigos.includes(nome) && (
-                <button onClick={() => addAmigo(nome)}>
-                  <FaPlus />
-                </button>
-              )}
-            </div>
-          ))}
+      {hasResultados ? (
+        filteredUsuarios.map((nome, index) => (
+          <div key={index}>
+            <p>{nome}</p>
+            {!nomesAmigos.includes(nome) && (
+              <button onClick={() => addAmigo(nome)}>
+                <FaPlus />
+              </button>
+            )}
+          </div>
+        ))
+      ) : (
+        <div>
+          <p>Nenhum usuário encontrado</p>
+        </div>
+      )
+    }
     </div>
   )
 }

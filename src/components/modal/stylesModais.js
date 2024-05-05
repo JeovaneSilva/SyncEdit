@@ -107,7 +107,7 @@ export const FooterEditor = styled.div`
         border: 1px solid black;
     }
 
-    @media (max-width:500px){
+    @media (max-width:850px){
 
         > div:first-child{
             margin-left: 10px;

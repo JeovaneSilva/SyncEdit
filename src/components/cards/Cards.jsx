@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {CardsProjetos,Card,CardAdd,InfoCard,IconsCard} from './styleCards'
+import {CardsProjetos,Card,CardAdd,InfoCard,IconsCard, MobileAdd} from './styleCards'
 import {FaEdit, FaTrash,FaRegPlusSquare} from "react-icons/fa";
 import ModalEditor from '../modal/ModalEditor';
 import ModalContentDocumento from '../modal/ModalContentDocumento';
@@ -75,46 +75,53 @@ const Cards = ({uid,userName,nomesAmigos}) => {
     <>
     <CardsProjetos>
 
-{newProjeto.map((projeto) => (
-<Card key={projeto.id}>
-  <InfoCard>
-    <h2>{projeto.nameProject}</h2>
-    <p>Ultimo Acesso: {projeto.ultimoAcesso}</p>
-    <h3>Colaboradores</h3>
-    <span>{projeto.colaboradores}</span>
-  </InfoCard>
-  <IconsCard>
-    <div>
-      <FaEdit onClick={() => openModalEditor(projeto)} />
-    </div>
-    <div>
-      <FaTrash onClick={() => openModalExcluirProjeto(projeto.nameProject)} />
-    </div>
-  </IconsCard>
-</Card>
-))}
+      {newProjeto.map((projeto) => (
+      <Card key={projeto.id}>
+        <InfoCard>
+          <h2>{projeto.nameProject}</h2>
+          <p>Ultimo Acesso: {projeto.ultimoAcesso}</p>
+          <h3>Colaboradores</h3>
+          <span>{projeto.colaboradores}</span>
+        </InfoCard>
+        <IconsCard>
+          <div>
+            <FaEdit onClick={() => openModalEditor(projeto)} />
+          </div>
+          <div>
+            <FaTrash onClick={() => openModalExcluirProjeto(projeto.nameProject)} />
+          </div>
+        </IconsCard>
+      </Card>
+      ))}
 
-{projetosColaborador.map((projeto) => (
-<Card key={projeto.id}>
-  <InfoCard>
-    <h2>{projeto.nameProject}</h2>
-    <p>Ultimo Acesso: {projeto.ultimoAcesso}</p>
-    <h3>Colaborador</h3>
-    <span>{projeto.colaboradores}</span>
-  </InfoCard>
-  <IconsCard>
-    <div>
-      <FaEdit onClick={() => openModalEditorColaborador(projeto)} />
-    </div>
-  </IconsCard>
-</Card>
-))}
+      {projetosColaborador.map((projeto) => (
+      <Card key={projeto.id}>
+        <InfoCard>
+          <h2>{projeto.nameProject}</h2>
+          <p>Ultimo Acesso: {projeto.ultimoAcesso}</p>
+          <h3>Colaborador</h3>
+          <span>{projeto.colaboradores}</span>
+        </InfoCard>
+        <IconsCard>
+          <div>
+            <FaEdit onClick={() => openModalEditorColaborador(projeto)} />
+          </div>
+        </IconsCard>
+      </Card>
+      ))}
 
-    <CardAdd>
-      <FaRegPlusSquare onClick={openModalNovoDoc} />
-    </CardAdd>
+      <CardAdd>
+        <FaRegPlusSquare onClick={openModalNovoDoc} />
+        <p>Adicionar</p>
+      </CardAdd>  
 
-</CardsProjetos>   
+    </CardsProjetos>
+
+    <MobileAdd>
+        <div>
+          <FaRegPlusSquare onClick={openModalNovoDoc} />
+        </div>
+    </MobileAdd>   
 
 {modalEditor &&
         <ModalEditor
