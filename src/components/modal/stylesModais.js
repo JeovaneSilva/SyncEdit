@@ -68,6 +68,8 @@ export const FooterEditor = styled.div`
 
     > div:first-child > div{
         display: flex;
+        align-items: center;
+        gap: 30px;
     }
 
     > div:first-child > div > input{
@@ -107,8 +109,29 @@ export const FooterEditor = styled.div`
         border: 1px solid black;
     }
 
-    @media (max-width:850px){
+    @media (max-width:1300px){
+        
+        > div:first-child{
+            margin-left: 10px;
+            margin-bottom: 50px;
+            align-items: center;
+        }
 
+        > div:last-child{
+            margin-bottom: 50px;
+            display: flex;
+            gap: 8rem;
+            margin-right: 10px;
+        }
+
+        > div:last-child > div {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+
+    @media (max-width:940px){
         > div:first-child{
             margin-left: 10px;
             margin-bottom: 50px;
@@ -118,11 +141,28 @@ export const FooterEditor = styled.div`
         }
 
         > div:first-child > label{
-            font-size: 13px;
+            font-size: 18px;
+            margin-left: 12px;
         }
 
         > div:first-child > div{
+            gap: 10px;
+        }
+
+        > div:last-child{
+            margin-bottom: 50px;
             display: flex;
+            gap: 2rem;
+            margin-right: 10px;
+        }
+
+    }
+
+    @media (max-width:680px){
+
+        > div:first-child > label{
+            font-size: 13px;
+            margin-left: 0;
         }
 
         > div:first-child > div > input{
@@ -138,15 +178,6 @@ export const FooterEditor = styled.div`
         }
 
         > div:last-child{
-            margin-bottom: 50px;
-            display: flex;
-            gap: 1rem;
-            margin-right: 10px;
-        }
-
-        > div:last-child > div {
-            display: flex;
-            flex-direction: column;
             gap: 1rem;
         }
 
@@ -156,6 +187,7 @@ export const FooterEditor = styled.div`
             font-size: 15px;
             width: 80px;
         }
+
     } 
 `
 

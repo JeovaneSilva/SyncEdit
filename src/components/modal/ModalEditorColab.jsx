@@ -1,5 +1,5 @@
 import React, {useState,useRef,useMemo} from 'react'
-import {FaEdit} from "react-icons/fa";
+import {FaEdit, FaSyncAlt} from "react-icons/fa";
 import JoditEditor from 'jodit-react';
 import { ModalEditorDiv,FooterEditor } from './stylesModais'
 import { CarregarProjetosColaborador } from '../../firebase/firebaseFunctions';
@@ -140,6 +140,7 @@ const ModalEditorColab = ({content,nomeProjeto,setModalEditorColaborador,uid,use
               <div>
               <input type="text" onChange={handleNomeChange} placeholder={nomeProjeto} />
               {nomeEditado && <FaEdit onClick={MudarNomeProjeto} />}
+              <FaSyncAlt />
               </div>
             </div>
 
