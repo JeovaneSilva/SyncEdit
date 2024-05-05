@@ -1,10 +1,10 @@
 import React, {useState,useRef} from 'react'
-import { HeaderContainer,Logo, DivPesquisa,MenuToggle,LoadingBar } from './stylenavbar'
+import { HeaderContainer,Logo, DivPesquisa,MenuToggle} from './stylenavbar'
 import LogoProjeto from '../../../public/logoSyncEdit.png'
 import { FaBars} from "react-icons/fa";
 import Sidebar from '../sidebar/Sidebar';
 
-const Navbar = ({DivHome,userName,nomesAmigos,setnomesAmigos,uid,setMostrarUsuarios,setSearch,search,loading,textLoading}) => {
+const Navbar = ({DivHome,userName,nomesAmigos,setnomesAmigos,uid,setMostrarUsuarios,setSearch,search}) => {
 
     const inputsearch = useRef()
      
@@ -33,10 +33,6 @@ const Navbar = ({DivHome,userName,nomesAmigos,setnomesAmigos,uid,setMostrarUsuar
         </Logo>
         <DivPesquisa>
           <input type="search" name="BuscarUsers" value={search} onChange={handleSearchChange} ref={inputsearch} placeholder='Buscar Usuários' />
-          {loading && <LoadingBar>
-            <p>{textLoading}</p>
-            <hr />
-         </LoadingBar>}
         </DivPesquisa>
         <MenuToggle>
           <FaBars onClick={ShowSidebar}/>

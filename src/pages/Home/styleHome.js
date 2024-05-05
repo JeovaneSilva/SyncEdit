@@ -60,14 +60,40 @@ export const Section = styled.section`
         height: 15px;
     }
 
-
     h1{
         margin-top: 71px;
         font-size: 40px;
         text-align: center;
     }
 
-    @media (max-width:500px){
+
+    @media (max-width:900px){
+        > div:first-child{
+        width: 350px;
+    }
+    }
+
+    @media (max-width:550px){
+        > div:first-child{
+        width: 200px;
+        top: 62px;
+        }
+
+        > div:first-child > div{
+        font-size: 15px;
+    }
+
+    > div:first-child > div > button{
+        width: 30px;
+        height: 20px;
+        border-radius: 5px;
+    }
+
+    > div:first-child > div > button > svg{
+        width: 10px;
+        height: 10px;
+    }
+
         h1{
             margin-top: 51px;
             font-size: 25px;

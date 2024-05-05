@@ -25,7 +25,7 @@ export const Logo = styled.div`
         height: 70px;
     }
 
-    @media (max-width:500px){
+    @media (max-width:550px){
         margin-left: 10px;
 
         img{
@@ -56,8 +56,13 @@ export const DivPesquisa = styled.div`
         outline: none;
     }
 
-    @media (max-width:500px){
-        margin-right: 20px;
+    @media (max-width:900px){
+        margin-right: 60px;
+        width: 350px;
+    }
+
+    @media (max-width:550px){
+        margin-right: 30px;
         width: 200px;
         height: 40px;
     }
@@ -72,7 +77,7 @@ export const MenuToggle = styled.div`
         cursor: pointer;
     }
 
-    @media (max-width:500px){
+    @media (max-width:550px){
         margin-right: 10px;
 
         svg{
@@ -80,40 +85,4 @@ export const MenuToggle = styled.div`
             height: 20px;
         }
     }
-`
-
-export const LoadingBar = styled.div`
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        top: 30px;
-        margin-left: 150px;
-        gap: 10px;
-
-    p{
-        text-align: center;
-        font-size: 15px;
-    }
-
-
-    hr{
-        width: 300px;
-        height: 3px;
-        border-radius: 5px;
-        background-color: black;
-        animation: loading 3s ease-in-out ; /* Animação de carregamento */
-        border: none;
-    }
-
-    @keyframes loading {
-  0% {
-    width: 0;
-  }
-  50% {
-    width: 150px;
-  }
-  100% {
-    width: 300px;
-  }
-}
 `

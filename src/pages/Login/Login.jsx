@@ -1,9 +1,8 @@
 import React, {useRef,useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
-import { auth } from '../firebase/firebaseConfig'
-import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, EsqueciSenha, CadastrarDiv } from '../styles/LoginRegister'
-
-import TeamUp from '../../public/undraw_team_up_re_84ok.svg'
+import { auth } from '../../firebase/firebaseConfig'
+import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, EsqueciSenha, CadastrarDiv } from '../../styles/LoginRegister'
+import TeamUp from '../../../public/undraw_team_up_re_84ok.svg'
 
 const Login = () => {
 
@@ -123,7 +122,6 @@ const Login = () => {
                 <p>Seja Bem Vindo ao SyncEdit!</p>
             </TopForm>
             
-
             <div>
                 <DadosForm>
                     <label htmlFor="InputEmail">Email</label>

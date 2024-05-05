@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Login from './pages/Login.jsx'
-import Cadastro from './pages/Cadastro.jsx'
+import Login from './pages/Login/Login.jsx'
+import Cadastro from './pages//Cadastro/Cadastro.jsx'
 import Home from './pages/Home/Home.jsx'
-import ErrorPage from './pages/ErrorPage.jsx'
+import ErrorPage from './pages/Error/ErrorPage.jsx'
 import GlobalStyle from './styles/globalStyle'
 
 

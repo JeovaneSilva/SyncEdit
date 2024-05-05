@@ -15,8 +15,6 @@ const Home = () => {
   const [nomesAmigos, setnomesAmigos] = useState([]);
   const [mostrarUsuarios, setMostrarUsuarios] = useState(false);
   const [search, setSearch] = useState('');
-  const [loading, setLoading] = useState(false);  
-  const [textLoading, setTextLoading] = useState('Carregando'); 
   
   useEffect(() => {
     fetchUserName(setUid,setUserName);
@@ -39,8 +37,6 @@ const Home = () => {
       setMostrarUsuarios={setMostrarUsuarios}
       setSearch={setSearch}
       search={search}
-      loading={loading}
-      textLoading={textLoading}
      />
      
       <Section>
@@ -50,9 +46,7 @@ const Home = () => {
         userName={userName}
         search={search}
         nomesAmigos={nomesAmigos}
-        setLoading={setLoading}
         uid={uid}
-        setTextLoading={setTextLoading}
         setnomesAmigos={setnomesAmigos}
         />
       )}

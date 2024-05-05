@@ -1,8 +1,8 @@
 import React, {useRef, useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
-import { auth, db } from '../firebase/firebaseConfig';
-import TeamUp from '../../public/undraw_team_up_re_84ok.svg'
-import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, CadastrarDiv } from '../styles/LoginRegister'
+import { auth, db } from '../../firebase/firebaseConfig';
+import TeamUp from '../../../public/undraw_team_up_re_84ok.svg'
+import { Main,TopForm, DadosForm,MostrarSenha,ButtonsForm, ButtonEntrarRegistrar, CadastrarDiv } from '../../styles/LoginRegister'
 
 const Cadastro = () => {
 

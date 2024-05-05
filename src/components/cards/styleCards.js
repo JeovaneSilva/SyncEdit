@@ -6,13 +6,21 @@ export const CardsProjetos = styled.div`
     margin-bottom: 2rem;
     display: grid;
     grid-template-columns: repeat(4, minmax(140px, 380px));
+    place-items: center;
     justify-content: center;
     align-items: center;
     gap: 20px;
 
-    @media (max-width:500px){
+    @media (max-width:1130px){
+        grid-template-columns: repeat(3, minmax(140px, 380px));
+    }
+
+    @media (max-width:894px){
+        grid-template-columns: repeat(2, minmax(140px, 380px));
+    }
+
+    @media (max-width:550px){
         grid-template-columns: repeat(1, minmax(140px, 380px));
-        place-items: center;
     }
 
 `
