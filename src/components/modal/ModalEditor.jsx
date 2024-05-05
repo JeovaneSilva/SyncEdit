@@ -15,7 +15,8 @@ const ModalEditor = ({content,uid,nomeProjeto,setModalEditor,setnewProjeto,nomes
     const [nomeEditado, setNomeEditado] = useState('');
 
     const config = useMemo(() => ({
-        height: "75vh"
+        height: "75vh",
+        placeholder: ''
       }), []); // A configuração só será recriada se as dependências mudarem
 
     const salvarContent = async () => {
