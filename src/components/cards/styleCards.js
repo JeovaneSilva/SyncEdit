@@ -84,9 +84,9 @@ export const MobileAdd = styled.div`
 
     div{
         position: fixed;
-        margin-bottom: 40px;
-        width: 70px;
-        height: 70px;
+        margin-bottom: 35px;
+        width: 55px;
+        height: 55px;
         background-color: #08c57c;
         padding: 10px;
         border-radius: 50%;

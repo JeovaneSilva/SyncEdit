@@ -73,6 +73,8 @@ export const Section = styled.section`
     }
 
     @media (max-width:550px){
+        margin-top: 55px;
+
         > div:first-child{
         width: 200px;
         top: 62px;
