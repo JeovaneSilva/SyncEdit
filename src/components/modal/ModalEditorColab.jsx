@@ -7,7 +7,7 @@ import { db } from '../../firebase/firebaseConfig';
 import html2pdf from 'html2pdf.js';
 import ModalMostrarMenbros from './ModalMostrarMenbros';
 
-const ModalEditorColab = ({content,nomeProjeto,setModalEditorColaborador,uid,userName,setProjetosColaborador}) => {
+const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColaborador,uid,userName,setProjetosColaborador}) => {
 
   const editor = useRef(null)
   const ButonSalvar = useRef(null)
@@ -126,6 +126,28 @@ const ModalEditorColab = ({content,nomeProjeto,setModalEditorColaborador,uid,use
     setModalMenbros(true)
   }
 
+  const RecarregarEditorColab = async () => {
+    try {
+      const snapshot = await db.ref(`users`).once('value');
+      const usersData = snapshot.val();
+  
+      if (usersData) {
+        Object.values(usersData).forEach((user) => {
+          if (user.documentos) {
+            Object.entries(user.documentos).forEach(([key, doc]) => {
+              if (doc.nameProject === nomeProjeto) {
+                setContent(doc.text || ''); 
+              }
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao recuperar texto do projeto colaborador:", error);
+    }
+  }
+
+
   return (
     <>
     <ModalEditorDiv>
@@ -140,7 +162,7 @@ const ModalEditorColab = ({content,nomeProjeto,setModalEditorColaborador,uid,use
               <div>
               <input type="text" onChange={handleNomeChange} placeholder={nomeProjeto} />
               {nomeEditado && <FaEdit onClick={MudarNomeProjeto} />}
-              <FaSyncAlt />
+              <FaSyncAlt onClick={RecarregarEditorColab} />
               </div>
             </div>
 

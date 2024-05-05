@@ -125,6 +125,7 @@ const Cards = ({uid,userName,nomesAmigos}) => {
 
 {modalEditor &&
         <ModalEditor
+        setContent={setContent}
         content={content}
         uid={uid}
         nomeProjeto={nomeProjeto}
@@ -136,6 +137,7 @@ const Cards = ({uid,userName,nomesAmigos}) => {
 
 {modalEditorColaborador && 
         <ModalEditorColab
+        setContent={setContent}
         content={content}
         nomeProjeto={nomeProjeto}
         setModalEditorColaborador={setModalEditorColaborador}

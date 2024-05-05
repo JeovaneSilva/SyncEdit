@@ -7,7 +7,7 @@ import { ModalEditorDiv,FooterEditor } from './stylesModais'
 import { CarregarProjetosProprios} from '../../firebase/firebaseFunctions';
 import html2pdf from 'html2pdf.js';
 
-const ModalEditor = ({content,uid,nomeProjeto,setModalEditor,setnewProjeto,nomesAmigos}) => {
+const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewProjeto,nomesAmigos}) => {
 
     const editor = useRef(null)
     const ButonSalvar = useRef(null)
@@ -98,6 +98,18 @@ const ModalEditor = ({content,uid,nomeProjeto,setModalEditor,setnewProjeto,nomes
         }
       }
 
+      const RecarregarEditor = async () => {
+      
+        try {
+          const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+          const projetoKey = Object.keys(snapshot.val())[0];
+          const textoProjeto = snapshot.val()[projetoKey].text;
+          setContent(textoProjeto);
+        } catch (error) {
+          console.error("Erro ao recuperar texto do projeto:", error);
+        }
+      }
+
   return (
     <>
     <ModalEditorDiv>
@@ -112,7 +124,7 @@ const ModalEditor = ({content,uid,nomeProjeto,setModalEditor,setnewProjeto,nomes
               <div>
                 <input type="text" onChange={handleNomeChange} placeholder={nomeProjeto} />
                 {nomeEditado && <FaEdit onClick={MudarNomeProjeto} />}
-                <FaSyncAlt />
+                <FaSyncAlt onClick={RecarregarEditor} />
               </div>
             </div>
 
