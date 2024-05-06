@@ -55,26 +55,28 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
   const handleContentChange = async (newContent) => {
     setContent(newContent);
     try {
-      const snapshot = await db.ref(`users`).once('value');
-      const usersData = snapshot.val();
-
-      if (usersData) {
-        Object.values(usersData).forEach(async (user) => {
-          if (user.documentos) {
-            Object.entries(user.documentos).forEach(async ([key, projeto]) => {
-              if (projeto.nameProject === nomeProjeto && !projeto.colaborador) {
-                await db.ref(`users/${user.id}/documentos/${key}`).update({
-                  text: newContent
-                })
-              }
-            });
-          }
-        });
-      }
+        // Atraso de 1 segundo antes de salvar
+        setTimeout(async () => {
+            const snapshot = await db.ref(`users`).once('value');
+            const usersData = snapshot.val();
+            if (usersData) {
+                Object.values(usersData).forEach(async (user) => {
+                    if (user.documentos) {
+                        Object.entries(user.documentos).forEach(async ([key, projeto]) => {
+                            if (projeto.nameProject === nomeProjeto && !projeto.colaborador) {
+                                await db.ref(`users/${user.id}/documentos/${key}`).update({
+                                    text: newContent
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        }, 1000);
     } catch (error) {
-      console.error("Erro ao salvar o texto do projeto colaborador:", error);
+        console.error("Erro ao salvar o texto do projeto colaborador:", error);
     }
-  };
+};
 
   const closeEditorColaborador = async () => {
     const dataAtual = new Date();

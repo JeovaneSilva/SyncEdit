@@ -46,17 +46,17 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     };
 
     const handleContentChange = async (newContent) => {
-    setContent(newContent);
-    try {
-      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
-      snapshot.forEach((projetoSnapshot) => {
-        projetoSnapshot.ref.update({
-          text: newContent,
-        });
-      });
-    } catch (error) {
-      console.error("Erro ao salvar o texto do projeto:", error);
-    }
+      setContent(newContent);
+      try {
+          // Atraso de 1 segundo antes de atualizar o Firebase
+          setTimeout(async () => {
+              await db.collection(`users/${uid}/documentos`).doc(nomeProjeto).set({
+                  text: newContent,
+              }, { merge: true });
+          }, 1000);
+      } catch (error) {
+          console.error("Erro ao salvar o texto do projeto:", error);
+      }
   };
 
     const closeEditor = async () => {
@@ -197,7 +197,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
           onBlur={handleContentChange}
         /> */}
           <FooterEditor>
-            <div>
+            <div> 
               <label>Editar Nome:</label>
               <div>
                 <input type="text" onChange={handleNomeChange} placeholder={nomeProjeto} />
