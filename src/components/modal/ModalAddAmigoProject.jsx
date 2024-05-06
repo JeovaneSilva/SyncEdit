@@ -31,8 +31,6 @@ const ModalAddAmigoProject = ({nomesAmigos,uid,nomeProjeto,setmodalAddAmigoProje
     }
   }
 
-  console.log(todosColaboradores)
-
   const eColaborador = (nome) => {
     return todosColaboradores.hasOwnProperty(nome); // Verifica se o nome está na lista de colaboradores
   };

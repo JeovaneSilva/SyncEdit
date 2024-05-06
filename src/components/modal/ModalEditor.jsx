@@ -1,4 +1,4 @@
-import React, {useState,useRef,useMemo} from 'react'
+import React, {useState,useRef,useMemo, useEffect} from 'react'
 import {FaEdit, FaSyncAlt } from "react-icons/fa";
 import JoditEditor from 'jodit-react';
 import { db } from '../../firebase/firebaseConfig';
@@ -33,6 +33,20 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         });
         alert("salvo")
         
+      } catch (error) {
+        console.error("Erro ao salvar o texto do projeto:", error);
+      }
+    };
+
+    const handleContentChange = async (newContent) => {
+      setContent(newContent);
+      try {
+        const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+        snapshot.forEach((projetoSnapshot) => {
+          projetoSnapshot.ref.update({
+            text: newContent,
+          });
+        });
       } catch (error) {
         console.error("Erro ao salvar o texto do projeto:", error);
       }
@@ -98,17 +112,33 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         }
       }
 
-      const RecarregarEditor = async () => {
-      
-        try {
-          const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+            const projetoKey = Object.keys(snapshot.val())[0];
+            const textoProjeto = snapshot.val()[projetoKey].text;
+            setContent(textoProjeto);
+          } catch (error) {
+            console.error("Erro ao recuperar texto do projeto:", error);
+          }
+        };
+    
+        fetchData();
+    
+        // Adicionar listener de evento para atualizações em tempo real
+        const projectRef = db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto);
+        projectRef.on('value', snapshot => {
           const projetoKey = Object.keys(snapshot.val())[0];
           const textoProjeto = snapshot.val()[projetoKey].text;
           setContent(textoProjeto);
-        } catch (error) {
-          console.error("Erro ao recuperar texto do projeto:", error);
-        }
-      }
+        });
+    
+        return () => {
+          // Limpar o listener quando o componente é desmontado
+          projectRef.off('value');
+        };
+      }, [uid, nomeProjeto]);
 
   return (
     <>
@@ -117,6 +147,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
           ref={editor}
           value={content}
           config={config}
+          onChange={handleContentChange}
         />
           <FooterEditor>
             <div>
@@ -124,7 +155,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
               <div>
                 <input type="text" onChange={handleNomeChange} placeholder={nomeProjeto} />
                 {nomeEditado && <FaEdit onClick={MudarNomeProjeto} />}
-                <FaSyncAlt onClick={RecarregarEditor} />
+                <FaSyncAlt />
               </div>
             </div>
 

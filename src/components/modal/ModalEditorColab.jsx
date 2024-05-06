@@ -1,4 +1,4 @@
-import React, {useState,useRef,useMemo} from 'react'
+import React, {useState,useRef,useMemo, useEffect} from 'react'
 import {FaEdit, FaSyncAlt} from "react-icons/fa";
 import JoditEditor from 'jodit-react';
 import { ModalEditorDiv,FooterEditor } from './stylesModais'
@@ -45,6 +45,30 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
       console.error("Erro ao salvar o texto do projeto colaborador:", error);
     }
   }
+
+  const handleContentChange = async (newContent) => {
+    setContent(newContent);
+    try {
+      const snapshot = await db.ref(`users`).once('value');
+      const usersData = snapshot.val();
+
+      if (usersData) {
+        Object.values(usersData).forEach(async (user) => {
+          if (user.documentos) {
+            Object.entries(user.documentos).forEach(async ([key, projeto]) => {
+              if (projeto.nameProject === nomeProjeto && !projeto.colaborador) {
+                await db.ref(`users/${user.id}/documentos/${key}`).update({
+                  text: newContent
+                })
+              }
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao salvar o texto do projeto colaborador:", error);
+    }
+  };
 
   const closeEditorColaborador = async () => {
     const dataAtual = new Date();
@@ -126,26 +150,53 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
     setModalMenbros(true)
   }
 
-  const RecarregarEditorColab = async () => {
-    try {
-      const snapshot = await db.ref(`users`).once('value');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const snapshot = await db.ref(`users`).once('value');
+        const usersData = snapshot.val();
+
+        if (usersData) {
+          Object.values(usersData).forEach((user) => {
+            if (user.documentos) {
+              Object.entries(user.documentos).forEach(([key, doc]) => {
+                if (doc.nameProject === nomeProjeto) {
+                  setContent(doc.text || '');
+                }
+              });
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Erro ao recuperar texto do projeto colaborador:", error);
+      }
+    };
+
+    fetchData();
+
+    // Adicionar listener de evento para atualizações em tempo real
+    const projectRef = db.ref(`users`);
+    projectRef.on('value', snapshot => {
       const usersData = snapshot.val();
-  
+
       if (usersData) {
         Object.values(usersData).forEach((user) => {
           if (user.documentos) {
             Object.entries(user.documentos).forEach(([key, doc]) => {
               if (doc.nameProject === nomeProjeto) {
-                setContent(doc.text || ''); 
+                setContent(doc.text || '');
               }
             });
           }
         });
       }
-    } catch (error) {
-      console.error("Erro ao recuperar texto do projeto colaborador:", error);
-    }
-  }
+    });
+
+    return () => {
+      // Limpar o listener quando o componente é desmontado
+      projectRef.off('value');
+    };
+  }, [uid, nomeProjeto]);
 
 
   return (
@@ -155,6 +206,7 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
           ref={editor}
           value={content}
           config={config}
+          onChange={handleContentChange}
         />
         <FooterEditor>
             <div>
@@ -162,7 +214,7 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
               <div>
               <input type="text" onChange={handleNomeChange} placeholder={nomeProjeto} />
               {nomeEditado && <FaEdit onClick={MudarNomeProjeto} />}
-              <FaSyncAlt onClick={RecarregarEditorColab} />
+              <FaSyncAlt />
               </div>
             </div>
 
