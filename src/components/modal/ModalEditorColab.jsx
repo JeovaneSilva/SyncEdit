@@ -16,7 +16,8 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
   const [modalMenbros, setModalMenbros] = useState(false)
 
   const config = useMemo(() => ({
-      height: "75vh"
+      height: "75vh",
+      placeholder: ''
     }), []); 
 
   const SalvarContentColab = async () => {

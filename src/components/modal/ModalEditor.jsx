@@ -39,18 +39,18 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     };
 
     const handleContentChange = async (newContent) => {
-      setContent(newContent);
-      try {
-        const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
-        snapshot.forEach((projetoSnapshot) => {
-          projetoSnapshot.ref.update({
-            text: newContent,
-          });
+    setContent(newContent);
+    try {
+      const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+      snapshot.forEach((projetoSnapshot) => {
+        projetoSnapshot.ref.update({
+          text: newContent,
         });
-      } catch (error) {
-        console.error("Erro ao salvar o texto do projeto:", error);
-      }
-    };
+      });
+    } catch (error) {
+      console.error("Erro ao salvar o texto do projeto:", error);
+    }
+  };
 
     const closeEditor = async () => {
 
