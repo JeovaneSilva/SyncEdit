@@ -151,7 +151,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
           ref={editor}
           value={content}
           config={config}
-          onChange={handleContentChange}
+          onBlur={handleContentChange}
         />
           <FooterEditor>
             <div>

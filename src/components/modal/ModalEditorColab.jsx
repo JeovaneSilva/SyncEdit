@@ -209,7 +209,7 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
           ref={editor}
           value={content}
           config={config}
-          onChange={handleContentChange}
+          onBlur={handleContentChange}
         />
         <FooterEditor>
             <div>
