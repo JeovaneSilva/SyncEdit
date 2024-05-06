@@ -155,10 +155,15 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
 
       // Função para mesclar dois textos
       const mergeText = (text1, text2) => {
-        // Aqui você pode implementar a lógica de mesclagem adequada para o seu aplicativo
-        // Por exemplo, você pode concatenar os textos ou usar uma biblioteca de mesclagem de texto
-        // Neste exemplo simples, estamos apenas adicionando o texto novo ao texto existente
-        return text1 + "\n\n" + text2;
+       // Divide os textos em arrays de palavras
+        const words1 = text1.split(/\s+/);
+        const words2 = text2.split(/\s+/);
+
+        // Cria um conjunto para armazenar as palavras únicas
+        const uniqueWords = new Set([...words1, ...words2]);
+
+        // Retorna um novo texto com as palavras únicas
+        return Array.from(uniqueWords).join(" ");
       };
 
 
