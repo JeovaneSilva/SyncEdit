@@ -128,20 +128,38 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
             console.error("Erro ao recuperar texto do projeto:", error);
           }
         };
-    
+      
         fetchData();
         
         const projectRef = db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto);
         projectRef.on('value', snapshot => {
           const projetoKey = Object.keys(snapshot.val())[0];
           const textoProjeto = snapshot.val()[projetoKey].text;
-          setContent(textoProjeto);
+          // Verifica se o texto recuperado é diferente do texto atual antes de atualizar o estado
+          if (textoProjeto !== content) {
+            const confirmUpdate = window.confirm("O texto foi atualizado por outro usuário. Deseja mesclar as alterações?");
+            if (confirmUpdate) {
+              // Mescla o texto atual com o texto recuperado
+              setContent(mergeText(content, textoProjeto));
+            } else {
+              // Mantém o texto atual
+              setContent(content);
+            }
+          }
         });
-    
+      
         return () => {
           projectRef.off('value');
         };
       }, [uid, nomeProjeto]);
+
+      // Função para mesclar dois textos
+      const mergeText = (text1, text2) => {
+        // Aqui você pode implementar a lógica de mesclagem adequada para o seu aplicativo
+        // Por exemplo, você pode concatenar os textos ou usar uma biblioteca de mesclagem de texto
+        // Neste exemplo simples, estamos apenas adicionando o texto novo ao texto existente
+        return text1 + "\n\n" + text2;
+      };
 
 
   return (
