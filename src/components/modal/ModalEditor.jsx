@@ -128,43 +128,21 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
             console.error("Erro ao recuperar texto do projeto:", error);
           }
         };
-      
+    
         fetchData();
         
         const projectRef = db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto);
         projectRef.on('value', snapshot => {
           const projetoKey = Object.keys(snapshot.val())[0];
           const textoProjeto = snapshot.val()[projetoKey].text;
-          // Verifica se o texto recuperado é diferente do texto atual antes de atualizar o estado
-          if (textoProjeto !== content) {
-            const confirmUpdate = window.confirm("O texto foi atualizado por outro usuário. Deseja mesclar as alterações?");
-            if (confirmUpdate) {
-              // Mescla o texto atual com o texto recuperado
-              setContent(mergeText(content, textoProjeto));
-            } else {
-              // Mantém o texto atual
-              setContent(content);
-            }
-          }
+          setContent(textoProjeto+"kkkkk");
         });
-      
+    
         return () => {
           projectRef.off('value');
         };
       }, [uid, nomeProjeto]);
-
-      // Função para mesclar dois textos
-      const mergeText = (text1, text2) => {
-       // Divide os textos em arrays de palavras
-        const words1 = text1.split(/\s+/);
-        const words2 = text2.split(/\s+/);
-
-        // Cria um conjunto para armazenar as palavras únicas
-        const uniqueWords = new Set([...words1, ...words2]);
-
-        // Retorna um novo texto com as palavras únicas
-        return Array.from(uniqueWords).join(" ");
-      };
+      
 
 
   return (
