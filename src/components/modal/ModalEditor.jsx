@@ -1,11 +1,13 @@
 import React, {useState,useRef,useMemo, useEffect} from 'react'
 import {FaEdit, FaSyncAlt } from "react-icons/fa";
-import JoditEditor from 'jodit-react';
+// import JoditEditor from 'jodit-react';
 import { db } from '../../firebase/firebaseConfig';
 import ModalAddAmigoProject from './ModalAddAmigoProject';
 import { ModalEditorDiv,FooterEditor } from './stylesModais'
 import { CarregarProjetosProprios} from '../../firebase/firebaseFunctions';
 import html2pdf from 'html2pdf.js';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewProjeto,nomesAmigos}) => {
 
@@ -15,14 +17,14 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     const [nomeEditado, setNomeEditado] = useState('');
     // const [textoModificado, setTextoModificado] = useState('');
 
-    const config = useMemo(() => ({
-        height: "75vh",
-        placeholder: '',
-        autofocus: false,
-		    cursorAfterAutofocus: 'start' | 'end',
-        readonly: false,
-        saveSelectionOnBlur: true,
-      }), []); // A configuração só será recriada se as dependências mudarem
+    // const config = useMemo(() => ({
+    //     height: "75vh",
+    //     placeholder: '',
+    //     autofocus: false,
+		//     cursorAfterAutofocus: 'start' | 'end',
+    //     readonly: false,
+    //     saveSelectionOnBlur: true,
+    //   }), []); // A configuração só será recriada se as dependências mudarem
 
     const salvarContent = async () => {
       try {
@@ -32,7 +34,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
           
           // Atualiza o texto e o último acesso do projeto
           projetoSnapshot.ref.update({
-            text: editor.current.value,
+            text: content,
           });
           
         });
@@ -142,18 +144,58 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
           projectRef.off('value');
         };
       }, [uid, nomeProjeto]);
+
+      const modules = {
+        toolbar: [
+          [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+          [{ 'size': [] }],
+          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' },
+           { 'indent': '-1' }, { 'indent': '+1' }],
+          ['link', 'image', 'video'],
+          ['align', 'color', 'background'], // Adicionando alinhamento, cor do texto e cor de fundo
+          ['script', 'formula'], // Adicionando script e fórmula
+          ['code-block'], // Adicionando bloco de código
+          ['clean']
+        ]
+      };
+    
+      const formats = [
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image', 'video',
+        'align', 'color', 'background',
+        'script', 'formula',
+        'code-block'
+      ];
+    
+      const editorStyle = {
+        backgroundColor: 'white',
+        height: '75%',
+        padding: '10px'
+      };
       
 
 
   return (
     <>
     <ModalEditorDiv>
-          <JoditEditor
+    <div style={editorStyle}>
+      <ReactQuill
+        value={content}
+        onChange={handleContentChange}
+        modules={modules}
+        formats={formats}
+        theme="snow"
+      />
+    </div>
+          {/* <JoditEditor
           ref={editor}
           value={content}
           config={config}
           onBlur={handleContentChange}
-        />
+        /> */}
           <FooterEditor>
             <div>
               <label>Editar Nome:</label>

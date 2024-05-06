@@ -1,11 +1,13 @@
 import React, {useState,useRef,useMemo, useEffect} from 'react'
 import {FaEdit, FaSyncAlt} from "react-icons/fa";
-import JoditEditor from 'jodit-react';
+// import JoditEditor from 'jodit-react';
 import { ModalEditorDiv,FooterEditor } from './stylesModais'
 import { CarregarProjetosColaborador } from '../../firebase/firebaseFunctions';
 import { db } from '../../firebase/firebaseConfig';
 import html2pdf from 'html2pdf.js';
 import ModalMostrarMenbros from './ModalMostrarMenbros';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColaborador,uid,userName,setProjetosColaborador}) => {
 
@@ -15,13 +17,13 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
   const [nomeEditado, setNomeEditado] = useState('');
   const [modalMenbros, setModalMenbros] = useState(false)
 
-  const config = useMemo(() => ({
-      height: "75vh",
-      placeholder: '',
-      autofocus: true,
-      readonly: false,
-		  cursorAfterAutofocus: 'end'
-    }), []); 
+  // const config = useMemo(() => ({
+  //     height: "75vh",
+  //     placeholder: '',
+  //     autofocus: true,
+  //     readonly: false,
+	// 	  cursorAfterAutofocus: 'end'
+  //   }), []); 
 
   const SalvarContentColab = async () => {
     try {
@@ -36,7 +38,7 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
               if (projeto.nameProject === nomeProjeto && !projeto.colaborador) {
                 // Atualiza o texto do projeto original com o conteúdo digitado pelo colaborador
                 await db.ref(`users/${user.id}/documentos/${key}`).update({
-                  text: editor.current.value
+                  text: content
                 })
               }
               
@@ -202,15 +204,56 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
     };
   }, [uid, nomeProjeto]);
 
+  const modules = {
+    toolbar: [
+      [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+      [{ 'size': [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' },
+       { 'indent': '-1' }, { 'indent': '+1' }],
+      ['link', 'image', 'video'],
+      ['align', 'color', 'background'], // Adicionando alinhamento, cor do texto e cor de fundo
+      ['script', 'formula'], // Adicionando script e fórmula
+      ['code-block'], // Adicionando bloco de código
+      ['clean']
+    ]
+  };
+
+  const formats = [
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'video',
+    'align', 'color', 'background',
+    'script', 'formula',
+    'code-block'
+  ];
+
+  const editorStyle = {
+    backgroundColor: 'white',
+    height: '75%',
+    padding: '10px'
+  };
+
   return (
     <>
     <ModalEditorDiv>
-        <JoditEditor
+    <div style={editorStyle}>
+      <ReactQuill
+        value={content}
+        onChange={handleContentChange}
+        modules={modules}
+        formats={formats}
+        theme="snow"
+      />
+    </div>
+
+        {/* <JoditEditor
           ref={editor}
           value={content}
           config={config}
           onBlur={handleContentChange}
-        />
+        /> */}
         <FooterEditor>
             <div>
               <label>Editar Nome:</label>
