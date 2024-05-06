@@ -13,10 +13,15 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     const ButonSalvar = useRef(null)
     const [modalAddAmigoProject, setmodalAddAmigoProject] = useState(false);
     const [nomeEditado, setNomeEditado] = useState('');
+    // const [textoModificado, setTextoModificado] = useState('');
 
     const config = useMemo(() => ({
         height: "75vh",
-        placeholder: ''
+        placeholder: '',
+        autofocus: false,
+		    cursorAfterAutofocus: 'start' | 'end',
+        readonly: false,
+        saveSelectionOnBlur: true,
       }), []); // A configuração só será recriada se as dependências mudarem
 
     const salvarContent = async () => {
@@ -125,8 +130,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         };
     
         fetchData();
-    
-        // Adicionar listener de evento para atualizações em tempo real
+        
         const projectRef = db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto);
         projectRef.on('value', snapshot => {
           const projetoKey = Object.keys(snapshot.val())[0];
@@ -135,10 +139,10 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         });
     
         return () => {
-          // Limpar o listener quando o componente é desmontado
           projectRef.off('value');
         };
       }, [uid, nomeProjeto]);
+
 
   return (
     <>

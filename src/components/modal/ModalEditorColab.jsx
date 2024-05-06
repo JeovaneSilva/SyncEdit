@@ -17,7 +17,10 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
 
   const config = useMemo(() => ({
       height: "75vh",
-      placeholder: ''
+      placeholder: '',
+      autofocus: true,
+      readonly: false,
+		  cursorAfterAutofocus: 'end'
     }), []); 
 
   const SalvarContentColab = async () => {
@@ -198,7 +201,6 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
       projectRef.off('value');
     };
   }, [uid, nomeProjeto]);
-
 
   return (
     <>
