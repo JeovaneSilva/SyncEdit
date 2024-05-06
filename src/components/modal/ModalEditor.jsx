@@ -135,7 +135,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         projectRef.on('value', snapshot => {
           const projetoKey = Object.keys(snapshot.val())[0];
           const textoProjeto = snapshot.val()[projetoKey].text;
-          setContent(textoProjeto+"kkkkk");
+          setContent(textoProjeto);
         });
     
         return () => {
