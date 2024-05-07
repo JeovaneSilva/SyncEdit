@@ -170,6 +170,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
             } else {
                 setColaboracoes([]);
             }
+            
             setModalColaboracoes(true);
         } catch (error) {
             console.error("Erro ao buscar as colaborações:", error);
@@ -194,6 +195,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
                         colaboracao: colaboracoes[key].colaboração
                     };
                 });
+
     
                 colaboracoesArray.forEach((colab) => {
                     const textoColaboracao = colab.colaboracao;
@@ -205,11 +207,8 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         } catch (error) {
             console.error("Erro ao buscar a colaboração:", error);
         }
-    }
-zzzzzzzzz    
+    } 
     
-      
-
   return (
     <>
     <ModalEditorDiv>
