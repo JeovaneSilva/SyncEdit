@@ -30,6 +30,9 @@ export const ModalEditorDiv = styled.div`
   > div:first-child{
     width: 100vw;
   }
+  > div:first-child > div:first-child{
+    height: 100%
+  }
 
 `;
 
@@ -47,7 +50,6 @@ export const ModalButton = styled.button`
     background-color: #035234;
   }
 `;
-
 
 export const FooterEditor = styled.div`
     display: flex;
@@ -184,7 +186,8 @@ export const FooterEditor = styled.div`
         > div:last-child button{
             padding: 5px;
             height: 40px;
-            font-size: 15px;
+            font-size: 10px;
+            font-weight: bolder;
             width: 80px;
         }
 
@@ -267,3 +270,36 @@ export const ModalContentExcluir = styled.div`
         font-weight: bold;
     }
 `;
+
+export const ContentSugestao = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+    background-color: white;
+    padding: 10px;
+
+    textarea{
+        max-height: 300px;
+        max-width: 100%;
+        height: 300px;
+        width: 100%;
+        padding: 10px;
+    }
+
+    > div {
+        display: flex;
+        gap: 20px;
+    }
+
+    button{
+        width: 100px;
+    }
+`
+
+export const DivColaboracoes = styled.div`
+    background-color: white;
+    display: flex;
+`

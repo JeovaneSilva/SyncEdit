@@ -3,7 +3,7 @@ import {FaEdit, FaSyncAlt } from "react-icons/fa";
 // import JoditEditor from 'jodit-react';
 import { db } from '../../firebase/firebaseConfig';
 import ModalAddAmigoProject from './ModalAddAmigoProject';
-import { ModalEditorDiv,FooterEditor } from './stylesModais'
+import { ModalEditorDiv,FooterEditor, Modal, DivColaboracoes,ModalButton } from './stylesModais'
 import { CarregarProjetosProprios} from '../../firebase/firebaseFunctions';
 import html2pdf from 'html2pdf.js';
 import ReactQuill from 'react-quill';
@@ -11,11 +11,11 @@ import 'react-quill/dist/quill.snow.css';
 
 const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewProjeto,nomesAmigos}) => {
 
-    const editor = useRef(null)
-    const ButonSalvar = useRef(null)
+
     const [modalAddAmigoProject, setmodalAddAmigoProject] = useState(false);
     const [nomeEditado, setNomeEditado] = useState('');
-    // const [textoModificado, setTextoModificado] = useState('');
+    const [colaboracoes, setColaboracoes] = useState([]);
+    const [modalColaboracoes, setModalColaboracoes] = useState(false);
 
     // const config = useMemo(() => ({
     //     height: "75vh",
@@ -25,25 +25,6 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     //     readonly: false,
     //     saveSelectionOnBlur: true,
     //   }), []); // A configuração só será recriada se as dependências mudarem
-
-    const salvarContent = async () => {
-      try {
-        // Obtém o texto atual do projeto antes de atualizá-lo
-        const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
-        snapshot.forEach((projetoSnapshot) => {
-          
-          // Atualiza o texto e o último acesso do projeto
-          projetoSnapshot.ref.update({
-            text: content,
-          });
-          
-        });
-        alert("salvo")
-        
-      } catch (error) {
-        console.error("Erro ao salvar o texto do projeto:", error);
-      }
-    };
 
     const handleContentChange = async (newContent) => {
     setContent(newContent);
@@ -86,7 +67,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
       }
 
       const handleDownloadPDF = () => {
-        const contentHtml = editor.current.value; 
+        const contentHtml = content
     
         const opt = {
           margin: 1,
@@ -172,11 +153,62 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     
       const editorStyle = {
         backgroundColor: 'white',
-        height: '75%',
+        height: '75vh',
         padding: '10px'
       };
-      
 
+      const OpenModalColaboracoes = async () => {
+        try {
+            const snapshot = await db.ref(`users/${uid}/documentos`).orderByChild('nameProject').equalTo(nomeProjeto).once('value');
+            const projetoKey = Object.keys(snapshot.val())[0];
+            const colaboracoesData = snapshot.val()[projetoKey].colaborações || {};
+    
+            if (colaboracoesData) {
+                const colaboradoresArray = Object.keys(colaboracoesData);
+                setColaboracoes(colaboradoresArray);
+                
+            } else {
+                setColaboracoes([]);
+            }
+            setModalColaboracoes(true);
+        } catch (error) {
+            console.error("Erro ao buscar as colaborações:", error);
+        }
+    }
+    
+
+      const FecharContribuicoesModal = () => {
+        setModalColaboracoes(false)
+      }
+
+      const handleMostrarColaboracao = async (colaborador) => {
+        try {
+            const snapshot = await db.ref(`users/${uid}/documentos/${nomeProjeto}/colaborações/${colaborador}`).once('value');
+            const colaboracoes = snapshot.val();
+    
+            if (colaboracoes) {
+                const colaboracoesKeys = Object.keys(colaboracoes);
+                const colaboracoesArray = colaboracoesKeys.map((key) => {
+                    return {
+                        id: key,
+                        colaboracao: colaboracoes[key].colaboração
+                    };
+                });
+    
+                colaboracoesArray.forEach((colab) => {
+                    const textoColaboracao = colab.colaboracao;
+                    alert(`Colaboração de ${colaborador} (ID: ${colab.id}):\n${textoColaboracao}`);
+                });
+            } else {
+                alert(`${colaborador} não tem colaborações neste projeto.`);
+            }
+        } catch (error) {
+            console.error("Erro ao buscar a colaboração:", error);
+        }
+    }
+zzzzzzzzz    
+    
+      
 
   return (
     <>
@@ -197,7 +229,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
           onBlur={handleContentChange}
         /> */}
           <FooterEditor>
-            <div> 
+            <div>
               <label>Editar Nome:</label>
               <div>
                 <input type="text" onChange={handleNomeChange} placeholder={nomeProjeto} />
@@ -209,7 +241,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
             <div>
             
               <div>
-                <button ref={ButonSalvar} onClick={salvarContent}>Salvar</button>
+                <button onClick={OpenModalColaboracoes}>Contribuições</button>
                 <button onClick={closeEditor}>Fechar</button>
               </div> 
 
@@ -229,6 +261,23 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
             nomeProjeto={nomeProjeto}
             setmodalAddAmigoProject={setmodalAddAmigoProject}
             />
+        }
+
+        {modalColaboracoes && 
+            <Modal>
+              <DivColaboracoes>
+              <div>
+                {colaboracoes.map((colaborador, index) => (
+                    <div key={index}>
+                        <button onClick={() => handleMostrarColaboracao(colaborador)}>
+                            {colaborador}
+                        </button>
+                    </div>
+                ))}
+                  <ModalButton onClick={FecharContribuicoesModal}>Sair</ModalButton>
+              </div>
+              </DivColaboracoes>
+            </Modal>
         }
     </>
   )
