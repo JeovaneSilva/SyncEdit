@@ -17,6 +17,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     const [colaboracoes, setColaboracoes] = useState([]);
     const [modalColaboracoes, setModalColaboracoes] = useState(false);
     const [ContribuicoesContribuidores, setContribuicoesContribuidores] = useState(false);
+    const [msgContribuicoes, setMsgContribuicoes] = useState([])
 
     // const config = useMemo(() => ({
     //     height: "75vh",
@@ -202,14 +203,12 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
                                         id: id,
                                         colaboracao: colaboracao.colaboração
                                     }));
-    
-                                    colaboracoesArray.forEach((colab) => {
-                                        const textoColaboracao = colab.colaboracao;
-                                        alert(`Colaboração de ${colaborador} (ID: ${colab.id}):\n${textoColaboracao}`);
-                                    });
+                                    setMsgContribuicoes(colaboracoesArray)
+                                   
                                 } else {
                                     alert(`${colaborador} não tem colaborações neste projeto.`);
                                 }
+                                
                             }
                         });
                     }
@@ -219,6 +218,8 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
             console.error("Erro ao buscar a colaboração:", error);
         }
     }
+
+    console.log(msgContribuicoes)
     
   return (
     <>
@@ -292,7 +293,11 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         {ContribuicoesContribuidores &&  
         <Modal>  
             <ContentComentários>
-              
+            {msgContribuicoes.map((msg, index) => (
+                        <div key={index}>
+                            <p>{msg.colaboracao}</p>
+                        </div>
+                      ))}
             </ContentComentários>
         </Modal>
         }
