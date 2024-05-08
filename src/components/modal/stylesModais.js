@@ -307,6 +307,13 @@ export const DivColaboracoes = styled.div`
     justify-content: center;
     align-items: center;
 
+    > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
     > div > div {
         width: 100%;
     }
@@ -319,12 +326,18 @@ export const DivColaboracoes = styled.div`
         height: 45px;
         border: none;
         background-color: #038a57;
-        
-  
+        border-radius: 10px;
+        margin-top: 5px;
+        color: white;
     }
 
     > div > div > button:hover{
         background-color: #035234;
+    }
+
+    button{
+        width: 150px;
+        margin-top: 20px;
     }
 `
 
@@ -332,4 +345,18 @@ export const ContentComentários = styled.div`
     width: 90%;
     height: 90%;
     background-color: white;
+    padding: 20px;
+
+    div{
+        margin-top: 20px;
+        background-color: #038a57;
+        border-radius: 0 20px 20px 20px;
+        padding: 10px;
+        font-size: 20px;
+        width: max-content  ;
+    }
+
+    p{
+        color: white;
+    }
 `

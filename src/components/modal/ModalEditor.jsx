@@ -219,6 +219,10 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         }
     }
 
+    const FecharMsgContribuicoes=() => {
+      setContribuicoesContribuidores(false)
+    }
+
     console.log(msgContribuicoes)
     
   return (
@@ -290,6 +294,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
               </DivColaboracoes>
             </Modal>
         }
+
         {ContribuicoesContribuidores &&  
         <Modal>  
             <ContentComentários>
@@ -298,6 +303,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
                             <p>{msg.colaboracao}</p>
                         </div>
                       ))}
+                      <ModalButton onClick={FecharMsgContribuicoes}>voltar</ModalButton>
             </ContentComentários>
         </Modal>
         }
