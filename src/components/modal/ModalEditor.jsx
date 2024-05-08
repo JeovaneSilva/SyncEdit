@@ -3,7 +3,7 @@ import {FaEdit, FaSyncAlt } from "react-icons/fa";
 // import JoditEditor from 'jodit-react';
 import { db } from '../../firebase/firebaseConfig';
 import ModalAddAmigoProject from './ModalAddAmigoProject';
-import { ModalEditorDiv,FooterEditor, Modal, DivColaboracoes,ModalButton } from './stylesModais'
+import { ModalEditorDiv,FooterEditor, Modal, DivColaboracoes,ModalButton,ContentComentários } from './stylesModais'
 import { CarregarProjetosProprios} from '../../firebase/firebaseFunctions';
 import html2pdf from 'html2pdf.js';
 import ReactQuill from 'react-quill';
@@ -16,6 +16,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     const [nomeEditado, setNomeEditado] = useState('');
     const [colaboracoes, setColaboracoes] = useState([]);
     const [modalColaboracoes, setModalColaboracoes] = useState(false);
+    const [ContribuicoesContribuidores, setContribuicoesContribuidores] = useState(false);
 
     // const config = useMemo(() => ({
     //     height: "75vh",
@@ -183,31 +184,41 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
       }
 
       const handleMostrarColaboracao = async (colaborador) => {
+        setContribuicoesContribuidores(true)
         try {
-            const snapshot = await db.ref(`users/${uid}/documentos/${nomeProjeto}/colaborações/${colaborador}`).once('value');
-            const colaboracoes = snapshot.val();
+            const snapshot = await db.ref(`users`).once('value');
+            const usersData = snapshot.val();
     
-            if (colaboracoes) {
-                const colaboracoesKeys = Object.keys(colaboracoes);
-                const colaboracoesArray = colaboracoesKeys.map((key) => {
-                    return {
-                        id: key,
-                        colaboracao: colaboracoes[key].colaboração
-                    };
-                });
-
+            if (usersData) {
+                Object.values(usersData).forEach(async (user) => {
+                    if (user.id === uid && user.documentos) {
+                        Object.entries(user.documentos).forEach(async ([key, doc]) => {
+                            if (doc.nameProject === nomeProjeto && doc.colaborações) {
+                                const colaboracoesSnapshot = await db.ref(`users/${uid}/documentos/${key}/colaborações/${colaborador}`).once('value');
+                                const colaboracoes = colaboracoesSnapshot.val();
+                                
+                                if (colaboracoes) {
+                                    const colaboracoesArray = Object.entries(colaboracoes).map(([id, colaboracao]) => ({
+                                        id: id,
+                                        colaboracao: colaboracao.colaboração
+                                    }));
     
-                colaboracoesArray.forEach((colab) => {
-                    const textoColaboracao = colab.colaboracao;
-                    alert(`Colaboração de ${colaborador} (ID: ${colab.id}):\n${textoColaboracao}`);
+                                    colaboracoesArray.forEach((colab) => {
+                                        const textoColaboracao = colab.colaboracao;
+                                        alert(`Colaboração de ${colaborador} (ID: ${colab.id}):\n${textoColaboracao}`);
+                                    });
+                                } else {
+                                    alert(`${colaborador} não tem colaborações neste projeto.`);
+                                }
+                            }
+                        });
+                    }
                 });
-            } else {
-                alert(`${colaborador} não tem colaborações neste projeto.`);
             }
         } catch (error) {
             console.error("Erro ao buscar a colaboração:", error);
         }
-    } 
+    }
     
   return (
     <>
@@ -277,6 +288,13 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
               </div>
               </DivColaboracoes>
             </Modal>
+        }
+        {ContribuicoesContribuidores &&  
+        <Modal>  
+            <ContentComentários>
+              
+            </ContentComentários>
+        </Modal>
         }
     </>
   )

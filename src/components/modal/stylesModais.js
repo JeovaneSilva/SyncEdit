@@ -301,5 +301,35 @@ export const ContentSugestao = styled.div`
 
 export const DivColaboracoes = styled.div`
     background-color: white;
+    width: 500px;
+    padding: 10px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > div > div {
+        width: 100%;
+    }
+
+    > div > div > button{
+        text-align: left;
+        padding: 5px;
+        font-size: 20px;
+        width: 480px;
+        height: 45px;
+        border: none;
+        background-color: #038a57;
+        
+  
+    }
+
+    > div > div > button:hover{
+        background-color: #035234;
+    }
+`
+
+export const ContentComentários = styled.div`
+    width: 90%;
+    height: 90%;
+    background-color: white;
 `
