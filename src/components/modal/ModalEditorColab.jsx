@@ -154,7 +154,6 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
     }
 }
 
-
   return (
     <>
     <ModalEditorDiv>

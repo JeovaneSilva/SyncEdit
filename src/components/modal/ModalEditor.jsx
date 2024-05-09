@@ -120,28 +120,30 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
 
       const modules = {
         toolbar: [
-          [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-          [{ 'size': [] }],
-          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' },
-           { 'indent': '-1' }, { 'indent': '+1' }],
-          ['link', 'image', 'video'],
-          ['align', 'color', 'background'], // Adicionando alinhamento, cor do texto e cor de fundo
-          ['script', 'formula'], // Adicionando script e fórmula
-          ['code-block'], // Adicionando bloco de código
-          ['clean']
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // Tamanhos de cabeçalho
+            [{ 'font': [] }],
+            [{ 'size': ['small', false, 'large', 'huge'] }], // Tamanhos de fonte
+            ['bold', 'italic', 'underline', 'strike'], // Estilos de texto
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Listas ordenadas e não ordenadas
+            [{ 'indent': '-1' }, { 'indent': '+1' }], // Recuo
+            [{ 'align': [] }], // Todos os tipos de alinhamento
+            ['link', 'image', 'video'],
+            ['color', 'background'], // Cores de texto e fundo
+            ['script', 'formula'], // Script e fórmula
+            ['code-block'], // Bloco de código
+            ['clean'] // Limpar formatação
         ]
-      };
+    };
     
-      const formats = [
-        'header', 'font', 'size',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        'link', 'image', 'video',
-        'align', 'color', 'background',
-        'script', 'formula',
-        'code-block'
-      ];
+    const formats = [
+      'header', 'font', 'size',
+      'bold', 'italic', 'underline', 'strike',
+      'list', 'bullet', 'indent',
+      'link', 'image', 'video',
+      'align', 'color', 'background',
+      'script', 'formula',
+      'code-block'
+  ];
     
       const editorStyle = {
         backgroundColor: 'white',
