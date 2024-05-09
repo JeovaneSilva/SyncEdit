@@ -1,6 +1,5 @@
-import React, {useState,useRef,useMemo, useEffect} from 'react'
-import {FaEdit, FaSyncAlt } from "react-icons/fa";
-// import JoditEditor from 'jodit-react';
+import React, {useState,useEffect} from 'react'
+import {FaEdit, FaSyncAlt,FaUserCircle, FaRegCopy } from "react-icons/fa";
 import { db } from '../../firebase/firebaseConfig';
 import ModalAddAmigoProject from './ModalAddAmigoProject';
 import { ModalEditorDiv,FooterEditor, Modal, DivColaboracoes,ModalButton,ContentComentários } from './stylesModais'
@@ -18,15 +17,6 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     const [modalColaboracoes, setModalColaboracoes] = useState(false);
     const [ContribuicoesContribuidores, setContribuicoesContribuidores] = useState(false);
     const [msgContribuicoes, setMsgContribuicoes] = useState([])
-
-    // const config = useMemo(() => ({
-    //     height: "75vh",
-    //     placeholder: '',
-    //     autofocus: false,
-		//     cursorAfterAutofocus: 'start' | 'end',
-    //     readonly: false,
-    //     saveSelectionOnBlur: true,
-    //   }), []); // A configuração só será recriada se as dependências mudarem
 
     const handleContentChange = async (newContent) => {
     setContent(newContent);
@@ -179,7 +169,6 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         }
     }
     
-
       const FecharContribuicoesModal = () => {
         setModalColaboracoes(false)
       }
@@ -222,8 +211,6 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
     const FecharMsgContribuicoes=() => {
       setContribuicoesContribuidores(false)
     }
-
-    console.log(msgContribuicoes)
     
   return (
     <>
@@ -298,12 +285,19 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         {ContribuicoesContribuidores &&  
         <Modal>  
             <ContentComentários>
-            {msgContribuicoes.map((msg, index) => (
-                        <div key={index}>
-                            <p>{msg.colaboracao}</p>
-                        </div>
-                      ))}
-                      <ModalButton onClick={FecharMsgContribuicoes}>voltar</ModalButton>
+            <div>
+              {msgContribuicoes.map((msg, index) => (
+                          <div key={index}>
+                              <FaUserCircle/>
+                              <p>{msg.colaboracao}</p>
+                              <FaRegCopy/>
+                          </div>
+                        ))}
+            </div>
+            <div>
+              <ModalButton onClick={FecharMsgContribuicoes}>voltar</ModalButton>
+            </div>
+                      
             </ContentComentários>
         </Modal>
         }

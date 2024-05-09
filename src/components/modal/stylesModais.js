@@ -346,17 +346,55 @@ export const ContentComentários = styled.div`
     height: 90%;
     background-color: white;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-    div{
+    div:first-child{
+        height: 85%;
+        width: auto;
+    }
+
+    div:first-child > div{
         margin-top: 20px;
+        width: max-content;
+        height: max-content;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    div:first-child > div> p{
         background-color: #038a57;
         border-radius: 0 20px 20px 20px;
         padding: 10px;
         font-size: 20px;
-        width: max-content  ;
-    }
-
-    p{
         color: white;
     }
+
+    div:first-child > div> svg:first-child{
+        width: 30px;
+        height: 30px;
+    }
+
+    div:first-child > div> svg:last-child{
+        margin-top: 7px;
+        width: 30px;
+        height: 30px;
+    }
+
+    div:last-child{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    div:last-child button{
+        width: 150px;
+        height: 45px;
+        font-size: 20px;
+    }
+
 `
