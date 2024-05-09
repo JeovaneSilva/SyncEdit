@@ -10,13 +10,13 @@ const filteredUsuarios = nomesUsuarios
   .filter(nome => nome && nome !== userName) // Verifica se nome não é undefined antes de fazer o filtro
   .filter(nome => nome.toLowerCase().includes(search.toLowerCase()));
   
-  if (search !== "" && DivResultadoPesquisa.current) {
-    DivResultadoPesquisa.current.style.display = "flex";
-  }
+  // if (search !== "" && DivResultadoPesquisa.current) {
+  //   DivResultadoPesquisa.current.style.display = "flex";
+  // }
 
-  if(search === "" && DivResultadoPesquisa.current){
-    DivResultadoPesquisa.current.style.display = "none";
-  }
+  // if(search === "" && DivResultadoPesquisa.current){
+  //   DivResultadoPesquisa.current.style.display = "none";
+  // }
 
   const addAmigo = async (nomeAmigo) => {
     try {
@@ -31,6 +31,9 @@ const filteredUsuarios = nomesUsuarios
   }
 
   const hasResultados = filteredUsuarios.length > 0;
+
+  console.log(filteredUsuarios)
+  
 
   return (
     <div ref={DivResultadoPesquisa}>

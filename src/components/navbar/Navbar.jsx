@@ -26,9 +26,9 @@ const Navbar = ({DivHome,userName,nomesAmigos,setnomesAmigos,uid,setMostrarUsuar
       DivHome.current.style.overflow= 'auto';
   }
 
-  const handleBlur = () => {
-    setSearch("");
-  };
+  // const handleBlur = () => {
+  //   setSearch("");
+  // };
 
   return (
     <HeaderContainer>
@@ -36,7 +36,7 @@ const Navbar = ({DivHome,userName,nomesAmigos,setnomesAmigos,uid,setMostrarUsuar
           <img src={LogoProjeto} alt="Logo" />
         </Logo>
         <DivPesquisa>
-          <input type="search" name="BuscarUsers" value={search} onChange={handleSearchChange} ref={inputsearch} placeholder='Buscar Usuários' onBlur={handleBlur} />
+          <input type="search" name="BuscarUsers" value={search} onChange={handleSearchChange} ref={inputsearch} placeholder='Buscar Usuários'/>
         </DivPesquisa>
         <MenuToggle>
           <FaBars onClick={ShowSidebar}/>
