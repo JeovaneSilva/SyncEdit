@@ -27,7 +27,7 @@ Projeto de um Editor de texto web que permite a edição e visualização em tem
 
  ## :pushpin: Como Usar a aplicação?
 
- ```
+
  1. Realizar Login e Cadastro.
 
  2. Na tela de Home o usuário deve primeiramente criar um novo documento inserindo um nome para ele.
@@ -40,8 +40,8 @@ Projeto de um Editor de texto web que permite a edição e visualização em tem
 
  6. Aproveite bastante o SyncEdit, qualquer dúvida ou sugestão de melhorias, me mande mensagem no instagram (Link no perfil).
 
- Obs: um colaborador NÃ0 pode editar o documento em tempo real pois é para evitar o conflito de envios ao firebase, porém ele pode mandar sugestões, correções,opiniões e outras ideias na seção contribuir.
- ```
+ * Obs: um colaborador ``NÃ0`` pode editar o documento em tempo real pois é para evitar o conflito de envios ao firebase, porém ele pode mandar sugestões, correções,opiniões e outras ideias na seção contribuir.
+
 
 
  
