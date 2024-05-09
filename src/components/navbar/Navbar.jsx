@@ -26,13 +26,17 @@ const Navbar = ({DivHome,userName,nomesAmigos,setnomesAmigos,uid,setMostrarUsuar
       DivHome.current.style.overflow= 'auto';
   }
 
+  const handleBlur = () => {
+    setSearch("");
+  };
+
   return (
     <HeaderContainer>
         <Logo>
           <img src={LogoProjeto} alt="Logo" />
         </Logo>
         <DivPesquisa>
-          <input type="search" name="BuscarUsers" value={search} onChange={handleSearchChange} ref={inputsearch} placeholder='Buscar Usuários' />
+          <input type="search" name="BuscarUsers" value={search} onChange={handleSearchChange} ref={inputsearch} placeholder='Buscar Usuários' onBlur={handleBlur} />
         </DivPesquisa>
         <MenuToggle>
           <FaBars onClick={ShowSidebar}/>

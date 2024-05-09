@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import {FaEdit, FaSyncAlt,FaUserCircle, FaRegCopy } from "react-icons/fa";
+import {FaEdit,FaUserCircle, FaRegCopy } from "react-icons/fa";
 import { db } from '../../firebase/firebaseConfig';
 import ModalAddAmigoProject from './ModalAddAmigoProject';
 import { ModalEditorDiv,FooterEditor, Modal, DivColaboracoes,ModalButton,ContentComentários } from './stylesModais'
@@ -229,19 +229,12 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
         theme="snow"
       />
     </div>
-          {/* <JoditEditor
-          ref={editor}
-          value={content}
-          config={config}
-          onBlur={handleContentChange}
-        /> */}
           <FooterEditor>
             <div>
               <label>Editar Nome:</label>
               <div>
                 <input type="text" onChange={handleNomeChange} placeholder={nomeProjeto} />
                 {nomeEditado && <FaEdit onClick={MudarNomeProjeto} />}
-                <FaSyncAlt />
               </div>
             </div>
 

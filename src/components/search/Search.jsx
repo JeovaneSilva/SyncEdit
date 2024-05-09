@@ -1,12 +1,22 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import { FaPlus} from "react-icons/fa";
 import { db } from '../../firebase/firebaseConfig';
 
 const Search = ({nomesUsuarios,userName,search,nomesAmigos,setnomesAmigos,uid}) => {
 
+  const DivResultadoPesquisa = useRef()
+
 const filteredUsuarios = nomesUsuarios
   .filter(nome => nome && nome !== userName) // Verifica se nome não é undefined antes de fazer o filtro
   .filter(nome => nome.toLowerCase().includes(search.toLowerCase()));
+  
+  if (search !== "" && DivResultadoPesquisa.current) {
+    DivResultadoPesquisa.current.style.display = "flex";
+  }
+
+  if(search === "" && DivResultadoPesquisa.current){
+    DivResultadoPesquisa.current.style.display = "none";
+  }
 
   const addAmigo = async (nomeAmigo) => {
     try {
@@ -21,10 +31,9 @@ const filteredUsuarios = nomesUsuarios
   }
 
   const hasResultados = filteredUsuarios.length > 0;
-  
 
   return (
-    <div>
+    <div ref={DivResultadoPesquisa}>
       {hasResultados ? (
         filteredUsuarios.map((nome, index) => (
           <div key={index}>

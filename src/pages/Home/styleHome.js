@@ -22,6 +22,8 @@ export const Section = styled.section`
         background-color: #00ff9c;
         border-radius: 8px;
         z-index: 10;
+        display: flex;
+        flex-direction: column;
     }
 
     > div:first-child > div{
