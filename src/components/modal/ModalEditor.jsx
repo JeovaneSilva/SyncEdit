@@ -212,6 +212,11 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
       setContribuicoesContribuidores(false)
     }
     
+    const handleCopyToClipboard = (msg) => {
+      navigator.clipboard.writeText(msg);
+      alert("Mensagem copiada para a área de transferência!");
+    };
+
   return (
     <>
     <ModalEditorDiv>
@@ -290,7 +295,7 @@ const ModalEditor = ({setContent,content,uid,nomeProjeto,setModalEditor,setnewPr
                           <div key={index}>
                               <FaUserCircle/>
                               <p>{msg.colaboracao}</p>
-                              <FaRegCopy/>
+                              <FaRegCopy onClick={() => handleCopyToClipboard(msg.colaboracao)} />
                           </div>
                         ))}
             </div>

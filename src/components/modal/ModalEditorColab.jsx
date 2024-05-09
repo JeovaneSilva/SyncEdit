@@ -1,6 +1,5 @@
-import React, {useState,useRef,useMemo, useEffect} from 'react'
+import React, {useState,useRef,useEffect} from 'react'
 import {FaEdit, FaSyncAlt} from "react-icons/fa";
-// import JoditEditor from 'jodit-react';
 import { ModalEditorDiv,FooterEditor, Modal, ContentSugestao, ModalButton } from './stylesModais'
 import { CarregarProjetosColaborador } from '../../firebase/firebaseFunctions';
 import { db } from '../../firebase/firebaseConfig';
@@ -10,7 +9,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColaborador,uid,userName,setProjetosColaborador}) => {
-
+  const textArea = useRef()
   const [nomeEditado, setNomeEditado] = useState('');
   const [modalMenbros, setModalMenbros] = useState(false)
   const [modalSugestões, setmodalSugestões] = useState(false)
@@ -149,6 +148,7 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
             });
         }
         alert("Contribuição salva com sucesso!");
+        textArea.current.value= ""
     } catch (error) {
         console.error("Erro ao salvar contribuição:", error);
     }
@@ -167,12 +167,6 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
     />
     </div>
 
-        {/* <JoditEditor
-          ref={editor}
-          value={content}
-          config={config}
-          onBlur={handleContentChange}
-        /> */}
         <FooterEditor>
             <div>
               <label>Editar Nome:</label>
@@ -210,6 +204,7 @@ const ModalEditorColab = ({setContent,content,nomeProjeto,setModalEditorColabora
         <Modal>
             <ContentSugestao>
             <textarea
+                ref={textArea}
                 name="sugestao"
                 id="sugestao"
                 placeholder='Sua contribuição'

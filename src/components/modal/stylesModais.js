@@ -339,10 +339,28 @@ export const DivColaboracoes = styled.div`
         width: 150px;
         margin-top: 20px;
     }
+
+    @media (max-width:550px){
+        width: 250px;
+
+        > div > div > button{
+        padding-left: 10px;
+        font-size: 15px;
+        width: 220px;
+        height: 35px;
+        border: none;
+        margin-top: 2px;
+    }
+
+        button{
+            width: 90px;
+            height: 35px;
+        }   
+    }
 `
 
 export const ContentComentários = styled.div`
-    width: 90%;
+    width: 95%;
     height: 90%;
     background-color: white;
     padding: 20px;
@@ -366,6 +384,7 @@ export const ContentComentários = styled.div`
     }
 
     div:first-child > div> p{
+        max-width: 900px;
         background-color: #038a57;
         border-radius: 0 20px 20px 20px;
         padding: 10px;
@@ -379,9 +398,9 @@ export const ContentComentários = styled.div`
     }
 
     div:first-child > div> svg:last-child{
-        margin-top: 7px;
-        width: 30px;
-        height: 30px;
+        margin-top: 10px;
+        width: 25px;
+        height: 25px;
     }
 
     div:last-child{
@@ -396,5 +415,47 @@ export const ContentComentários = styled.div`
         height: 45px;
         font-size: 20px;
     }
+
+    @media (max-width:1115px){
+        
+        div:first-child > div> p{
+            max-width: 600px;
+            font-size: 17px;
+        }
+    }
+
+    @media (max-width:830px){
+
+        div:first-child > div> p{
+            max-width: 400px;
+            font-size: 17px;
+        }
+    }
+
+    @media (max-width:600px){
+
+        div:first-child > div> p{
+            max-width: 200px;
+            font-size: 13px;
+        }
+
+        div:first-child > div> svg:first-child{
+        width: 20px;
+        height: 20px;
+    }
+
+    div:first-child > div> svg:last-child{
+        margin-top: 10px;
+        width: 15px;
+        height: 15px;
+    }
+
+    div:last-child button{
+        width: 100px;
+        height: 35px;
+        font-size: 12px;
+    }
+    }
+    
 
 `
