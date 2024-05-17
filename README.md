@@ -5,7 +5,7 @@
 Projeto de um Editor de texto web que permite a edição e visualização em tempo real de um documento de texto compartilhado.
 
 
--  [x]  Projeto em Andamento.
+-  [ ]  Projeto em Andamento.
 * Disponível em [SyncEdit](https://sync-edit.netlify.app/).
 * Hospedado no Netlify.
 * Login e Cadastro obrigatórios.
